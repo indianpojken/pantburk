@@ -35,7 +35,7 @@ export default async function handler(req, res) {
 
     const booking = new Booking(body)
 
-    if (!isAfterOpen(booking.time.start)) {
+    if (!isAfterOpen(body.start)) {
       return res.status(400).json({ status: "error", message: "before-open" })
     }
 
