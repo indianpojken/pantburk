@@ -10,8 +10,11 @@ import * as settings from "./../../settings"
 export default function AdminForm() {
   const [message, setMessage] = React.useState("")
 
-  const open = dayjs(timeOpen()).format("HH:mm")
-  const close = dayjs(timeClose()).format("HH:mm")
+  const time = {
+    open: dayjs(timeOpen()).format("HH:mm"),
+    close: dayjs(timeClose()).format("HH:mm"),
+  }
+
   const { mutate } = useSWRConfig()
 
   const handleSubmit = async (event) => {
@@ -21,10 +24,8 @@ export default function AdminForm() {
       names: event.target.names.value,
       category: event.target.category.value,
       start: event.target.start.value,
-      end: undefined,
     }
 
-    const JSONdata = JSON.stringify(data)
     const endpoint = "/api/booking/add"
 
     const options = {
@@ -32,7 +33,7 @@ export default function AdminForm() {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSONdata,
+      body: JSON.stringify(data),
     }
 
     const response = await fetch(endpoint, options)
@@ -84,7 +85,7 @@ export default function AdminForm() {
         <div className="field">
           <label className="label">Starttid</label>
           <div className="control">
-            <input className="input has-text-centered" type="time" name="start" min={open} max={close} step="60" />
+            <input className="input has-text-centered" type="time" name="start" min={time.open} max={time.close} step="60" />
           </div>
         </div>
         <label className="label">Kategori</label>
