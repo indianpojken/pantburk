@@ -3,6 +3,8 @@ import dayjs from "dayjs"
 
 import { useSWRConfig } from "swr"
 
+import Notification from "./Notification"
+
 import { timeOpen, timeClose } from "./../../library/timehelpers"
 
 import * as settings from "./../../settings"
@@ -39,38 +41,14 @@ export default function AdminForm() {
     const response = await fetch(endpoint, options)
     const result = await response.json()
 
-    handleMessage(result)
-    mutate("/api/bookings")
-  }
-
-  const handleMessage = m => {
-    switch (m.status) {
-      case "ok": {
-        setMessage("")
-        document.getElementById("superdupermegaform").reset()
-        break
-      }
-      case "error": {
-        switch (m.message) {
-          case "conflict": {
-            setMessage("Bokning kunde inte läggas till, då tid krockar.")
-            break
-          }
-          case "before-open": {
-            setMessage("Bokning kunde inte läggas till, starttid är före öppningstid.")
-            break
-          }
-          case "after-close": {
-            setMessage("Bokning kunde inte läggas till, sluttid är efter stängningstid.")
-            break
-          }
-          default: {
-            setMessage("Felmeddelande ej hanterat.")
-            break
-          }
-        }
-      }
+    if (result.status === "ok") {
+      setMessage("")
+      document.getElementById("superdupermegaform").reset()
+    } else {
+      setMessage(result.message)
     }
+
+    mutate("/api/bookings")
   }
 
   return (
@@ -108,11 +86,7 @@ export default function AdminForm() {
       </form>
 
       <br />
-      {message !== "" &&
-        <div className="notification is-danger">
-          {message}
-        </div>
-      }
+      <Notification message={message}/>
     </div>
   )
 }
