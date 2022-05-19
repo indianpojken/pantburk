@@ -1,9 +1,11 @@
-import dayjs from "dayjs"
-import { useSWRConfig } from "swr"
 import React from "react"
+import dayjs from "dayjs"
 
-import { timeOpen, timeClose, } from "./../../library/timehelpers.js"
-import * as settings from "./../../settings.js"
+import { useSWRConfig } from "swr"
+
+import { timeOpen, timeClose } from "./../../library/timehelpers"
+
+import * as settings from "./../../settings"
 
 export default function AdminForm() {
   const [message, setMessage] = React.useState("")

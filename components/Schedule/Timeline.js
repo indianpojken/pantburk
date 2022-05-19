@@ -1,6 +1,6 @@
 import dayjs from "dayjs"
 
-import { timeOpen, minutesOpen, } from "./../../library/timehelpers.js"
+import { timeOpen, minutesOpen } from "./../../library/timehelpers"
 
 export default function Timeline() {
   const time = []

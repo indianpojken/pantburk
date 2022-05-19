@@ -1,10 +1,10 @@
 import dayjs from "dayjs"
 import { Op } from "sequelize"
 
-import { BookingModel } from "./../../../models/booking.js"
-import Booking from "./../../../library/booking.js"
+import { BookingModel } from "./../../../models/booking"
 
-import { isAfterClose, isAfterOpen, } from "./../../../library/timehelpers.js"
+import Booking from "./../../../library/booking"
+import { isAfterClose, isAfterOpen } from "./../../../library/timehelpers"
 
 export default async function handler(req, res) {
   const body = req.body

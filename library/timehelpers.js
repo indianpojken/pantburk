@@ -1,12 +1,12 @@
 import dayjs from "dayjs"
 
-import isSameOrAfter from "dayjs/plugin/isSameOrAfter.js"
-import isSameOrBefore from "dayjs/plugin/isSameOrBefore.js"
+import isSameOrAfter from "dayjs/plugin/isSameOrAfter"
+import isSameOrBefore from "dayjs/plugin/isSameOrBefore"
+
+import * as settings from "./../settings"
 
 dayjs.extend(isSameOrAfter)
 dayjs.extend(isSameOrBefore)
-
-import * as settings from "./../settings.js"
 
 export const timeFormat = "YYYY-MM-DD HH:mm"
 export const dateFormat = "YYYY-MM-DD "

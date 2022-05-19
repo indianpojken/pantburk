@@ -1,12 +1,12 @@
 import useSWR from "swr"
 
-import BookingItem from "./BookingItem"
+import Item from "./Schedule/Item"
 import Category from "./Schedule/Category"
 import Timeline from "./Schedule/Timeline"
 
-import { minutesOpen, } from "./../library/timehelpers.js"
+import { minutesOpen } from "./../library/timehelpers"
 
-import * as settings from "./../settings.js"
+import * as settings from "./../settings"
 
 const fetcher = (...args) => fetch(...args).then(res => res.json())
 
@@ -36,7 +36,7 @@ export default function Schedule({ admin }) {
       ))}
 
       {data.map((b, i) => (
-        <BookingItem booking={b} admin={admin} key={i} />
+        <Item booking={b} admin={admin} key={i} />
       ))}
 
       <style jsx>{`

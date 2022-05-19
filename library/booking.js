@@ -1,8 +1,7 @@
 import dayjs from "dayjs"
+import isBetween from "dayjs/plugin/isBetween"
 
-import isBetween from "dayjs/plugin/isBetween.js"
-
-import { BookingModel } from "./../models/booking.js"
+import { BookingModel } from "./../models/booking"
 
 import {
   timeOpen,
@@ -10,9 +9,9 @@ import {
   timeFormat,
   isAfterOpen,
   isAfterClose,
-} from "./timehelpers.js"
+} from "./timehelpers"
 
-import * as settings from "./../settings.js"
+import * as settings from "./../settings"
 
 dayjs.extend(isBetween)
 

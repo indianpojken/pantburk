@@ -1,7 +1,8 @@
 import Head from "next/head"
-import Schedule from "../components/Schedule"
 
-import { isOpenToday } from "./../library/timehelpers.js"
+import Schedule from "./../components/Schedule"
+
+import { isOpenToday } from "./../library/timehelpers"
 
 export default function Index() {
   return (

@@ -1,4 +1,4 @@
-import { BookingModel } from "./../../../models/booking.js"
+import { BookingModel } from "./../../../models/booking"
 
 export default async function handler(req, res) {
   const { id } = req.query
