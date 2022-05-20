@@ -29,12 +29,15 @@ export default function Item({ booking, admin }) {
 
         <div className="column is-full is-size-7 has-text-weight-bold">
           <div className="columns is-gapless is-multiline">
-            <p className="column">{booking.start.substring(10, 16)}</p>
+            <p className="column">
+              {booking.start.substring(10, 16)}
+            </p>
             {admin === true &&
-              <button className="delete is-small delete-button" onClick={(_) => deleteClick(booking.id)}></button>
-            }
+              <button
+                className="delete is-small delete-button"
+                onClick={(_) => deleteClick(booking.id)}>
+              </button>}
           </div>
-
         </div>
 
         <div className="column is-full has-text-centered has-text-weight-bold">
@@ -42,7 +45,9 @@ export default function Item({ booking, admin }) {
         </div>
 
         <div className="column is-full is-size-7 has-text-weight-bold time-bottom">
-          <p>{booking.end.substring(10, 16)}</p>
+          <p>
+            {booking.end.substring(10, 16)}
+          </p>
         </div>
 
       </div>

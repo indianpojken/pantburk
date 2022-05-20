@@ -53,17 +53,31 @@ export default function AdminForm() {
 
   return (
     <div>
-      <form id="superdupermegaform" onSubmit={handleSubmit} autoComplete="off">
+      <form
+        id="superdupermegaform"
+        onSubmit={handleSubmit}
+        autoComplete="off">
         <div className="field">
           <label className="label">Namn</label>
           <div className="control">
-            <input className="input" type="text" placeholder="Namn" name="names" maxLength="30" required />
+            <input
+              className="input"
+              type="text"
+              placeholder="Namn"
+              name="names"
+              maxLength="30"
+              required />
           </div>
         </div>
         <div className="field">
           <label className="label">Starttid</label>
           <div className="control">
-            <input className="input has-text-centered" type="time" name="start" min={time.open} max={time.close} step="60" />
+            <input
+              className="input has-text-centered"
+              type="time" name="start"
+              min={time.open}
+              max={time.close}
+              step="60" />
           </div>
         </div>
         <label className="label">Kategori</label>
@@ -86,7 +100,7 @@ export default function AdminForm() {
       </form>
 
       <br />
-      <Notification message={message}/>
+      <Notification message={message} />
     </div>
   )
 }
