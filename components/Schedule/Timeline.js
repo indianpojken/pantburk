@@ -1,11 +1,11 @@
 import Timestamp from "./Timeline/Timestamp"
 
-import { minutesOpen } from "./../../library/timehelpers"
+import TimeHelpers from "./../../library/timehelpers"
 
-export default function Timeline() {
+export default function Timeline({ settings }) {
   const time = []
 
-  for (let minute = 0; minute < minutesOpen(); minute++) {
+  for (let minute = 0; minute < new TimeHelpers(settings).minutesOpen(); minute++) {
     if (minute % 60 == 0 || minute % 30 == 0) {
       time.push(minute)
     }
@@ -14,7 +14,7 @@ export default function Timeline() {
   return (
     <>
       {time.map((minute, i) => (
-        <Timestamp minute={minute} key={i} />
+        <Timestamp minute={minute} settings={settings} key={i} />
       ))}
       <style jsx global>{`
         :global(body) {

@@ -1,19 +1,25 @@
 import { useSWRConfig } from "swr"
 
-import { timeOpen, minutesBetween } from "./../../library/timehelpers"
+import { getCategory } from "../../library/settingshelpers"
+import TimeHelpers from "./../../library/timehelpers"
 
-import * as settings from "./../../settings"
+export default function Item({ booking, admin, settings }) {
+  const timehelpers = new TimeHelpers(settings)
+  const itemSettings = getCategory(settings, booking.category)
 
-export default function Item({ booking, admin }) {
   const color = {
-    background: settings.categories[booking.category].bgColor,
-    border: settings.categories[booking.category].borderColor
+    background: itemSettings.bgColor,
+    border: itemSettings.borderColor
   }
 
   const position = {
-    column: Object.keys(settings.categories).indexOf(booking.category),
-    start: minutesBetween(timeOpen(), booking.start),
-    end: minutesBetween(timeOpen(), booking.end),
+    column: itemSettings.position,
+    start: timehelpers.minutesBetween(
+      timehelpers.timeOpen(), booking.start
+    ),
+    end: timehelpers.minutesBetween(
+      timehelpers.timeOpen(), booking.end
+    ),
   }
 
   const { mutate } = useSWRConfig()

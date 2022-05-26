@@ -1,15 +1,15 @@
 import dayjs from "dayjs"
 
-import { timeOpen } from "./../../../library/timehelpers"
+import TimeHelpers from "./../../../library/timehelpers"
 
-export default function Timestamp({ minute }) {
+export default function Timestamp({ minute, settings }) {
   return (
     <div className=
       {minute % 60 === 0
         ? "time time-border is-size-6 has-text-weight-semibold"
         : "time time-border is-size-7"
       }>
-      {dayjs(timeOpen()).add(minute, "m").format("HH:mm")}
+      {dayjs(new TimeHelpers(settings).timeOpen()).add(minute, "m").format("HH:mm")}
 
       <style jsx>{`
         .time {

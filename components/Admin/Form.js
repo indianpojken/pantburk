@@ -5,16 +5,16 @@ import { useSWRConfig } from "swr"
 
 import Notification from "./Notification"
 
-import { timeOpen, timeClose } from "./../../library/timehelpers"
+import { getCategory } from "../../library/settingshelpers"
+import TimeHelpers from "../../library/timehelpers"
 
-import * as settings from "./../../settings"
-
-export default function AdminForm() {
+export default function AdminForm({ settings }) {
   const [message, setMessage] = React.useState("")
+  const timehelpers = new TimeHelpers(settings)
 
   const time = {
-    open: dayjs(timeOpen()).format("HH:mm"),
-    close: dayjs(timeClose()).format("HH:mm"),
+    open: dayjs(timehelpers.timeOpen()).format("HH:mm"),
+    close: dayjs(timehelpers.timeClose()).format("HH:mm"),
   }
 
   const { mutate } = useSWRConfig()
@@ -26,6 +26,8 @@ export default function AdminForm() {
       names: event.target.names.value,
       category: event.target.category.value,
       start: event.target.start.value,
+      duration: getCategory(settings, event.target.category.value).duration,
+      settings: settings,
     }
 
     const endpoint = "/api/booking/add"
@@ -85,9 +87,9 @@ export default function AdminForm() {
           <div className="control">
             <div className="select">
               <select name="category" required>
-                {Object.keys(settings.categories).map((c, i) => (
-                  <option value={c} key={i}>
-                    {settings.categories[c].title}
+                {settings.categories.map((c, i) => (
+                  <option value={c.category} key={i} >
+                    {c.title}
                   </option>
                 ))}
               </select>

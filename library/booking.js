@@ -2,22 +2,16 @@ import dayjs from "dayjs"
 import isBetween from "dayjs/plugin/isBetween"
 
 import { BookingModel } from "./../models/booking"
-
-import {
-  timeOpen,
-  timeClose,
-  timeFormat,
-  isAfterOpen,
-  isAfterClose,
-} from "./timehelpers"
-
-import * as settings from "./../settings"
+import TimeHelpers from "./timehelpers"
 
 dayjs.extend(isBetween)
 
 export default class Booking {
-  // booking -> { names, category, start, end }
-  constructor(booking) {
+  // booking -> { names, category, start, duration, end }
+  constructor(booking, settings) {
+    this.settings = settings
+    this.timehelper = new TimeHelpers(this.settings)
+
     this.names = booking.names
     this.category = booking.category
 
@@ -26,7 +20,9 @@ export default class Booking {
       end: booking.end,
     }
 
-    if (!isAfterOpen(this.time.start)) {
+    this.duration = booking.duration
+
+    if (!this.timehelper.isAfterOpen(this.time.start)) {
       this.time.start = timeOpen()
     }
 
@@ -69,16 +65,12 @@ export default class Booking {
     })
   }
 
-  #duration() {
-    return settings.categories[this.category].duration
-  }
-
   #endTime() {
     const time = dayjs(this.time.start)
-      .add(this.#duration(), "m")
-      .format(timeFormat)
+      .add(this.duration, "m")
+      .format(this.timehelper.timeFormat)
 
-    if (isAfterClose(time)) {
+    if (this.timehelper.isAfterClose(time)) {
       return timeClose()
     } else {
       return time

@@ -1,12 +1,29 @@
 import Head from "next/head"
+import useSWR from "swr"
 
 import Schedule from "./../components/Schedule"
 import AdminForm from "./../components/Admin/Form"
 
-import { isOpenToday } from "./../library/timehelpers"
+import TimeHelpers from "./../library/timehelpers"
+
+const fetcher = (...args) => fetch(...args).then(res => res.json())
+
+function getSettings() {
+  const { data, error } = useSWR("/api/settings", fetcher)
+
+  return {
+    settings: data,
+    error: error,
+  }
+}
 
 export default function Index() {
-  if (isOpenToday()) {
+  const { settings, error } = getSettings()
+
+  if (error) return <div>Failed to load</div>
+  if (!settings) return <div>Loading...</div>
+
+  if (new TimeHelpers(settings).isOpenToday()) {
     return (
       <div className="tile is-ancestor">
         <Head>
@@ -15,7 +32,7 @@ export default function Index() {
           <title>Pantburk (Admin)</title>
         </Head>
         <div className="timeline-border">
-          <AdminForm />
+          <AdminForm settings={settings}/>
 
         <style jsx>{`
           .timeline-border {
@@ -25,7 +42,7 @@ export default function Index() {
           }
         `}</style>
         </div>
-        <Schedule admin={true} />
+        <Schedule admin={true} settings={settings} />
       </div>
     )
   } else {

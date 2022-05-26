@@ -3,66 +3,76 @@ import dayjs from "dayjs"
 import isSameOrAfter from "dayjs/plugin/isSameOrAfter"
 import isSameOrBefore from "dayjs/plugin/isSameOrBefore"
 
-import * as settings from "./../settings"
+import { getDay } from "./settingshelpers"
 
 dayjs.extend(isSameOrAfter)
 dayjs.extend(isSameOrBefore)
 
-export const timeFormat = "YYYY-MM-DD HH:mm"
-export const dateFormat = "YYYY-MM-DD "
+export default class TimeHelpers {
+  #settings
 
-export function isOpenToday() {
-   if (settings.days[dayjs().format("dddd")] === undefined) {
-     return false
-   } else {
-     return true
-   }
-}
+  constructor(settings) {
+    this.#settings = settings
 
-export function minutesBetween(start, end) {
-  return dayjs(end).diff(start, "m")
-}
-
-export function minutesOpen() {
-  return minutesBetween(timeOpen(), timeClose())
-}
-
-export function timeOpen() {
-  const open = settings.days[dayjs().format("dddd")].open
-  return dayjs().format(dateFormat + open)
-}
-
-export function timeClose() {
-  const hours = {
-    open: settings.days[dayjs().format("dddd")].open,
-    close: settings.days[dayjs().format("dddd")].close,
+    this.timeFormat = "YYYY-MM-DD HH:mm"
+    this.dateFormat = "YYYY-MM-DD "
   }
 
-  const time = {
-    open: dayjs().format(dateFormat + hours.start),
-    close: dayjs().format(dateFormat + hours.close),
+  isOpenToday() {
+    const today = getDay(this.#settings, dayjs().format("dddd"))
+
+    if (today.open === "") {
+      return false
+    } else {
+      return true
+    }
   }
 
-  // Increment 1 day, so spanning onto another day works correctly.
-  if (dayjs(time.open).isBefore(dayjs(time.close))) {
-    return dayjs(time.close).add(1, 'd').format(timeFormat)
-  } else {
-    return time.close
+  minutesBetween(start, end) {
+    return dayjs(end).diff(start, "m")
   }
-}
 
-export function isAfterOpen(time) {
-  if (dayjs(time).isSameOrAfter(timeOpen())) {
-    return true
-  } else {
-    return false
+  minutesOpen() {
+    return this.minutesBetween(this.timeOpen(), this.timeClose())
   }
-}
 
-export function isAfterClose(time) {
-  if (dayjs(time).isAfter(timeClose())) {
-    return true
-  } else {
-    return false
+  timeOpen() {
+    const open = getDay(this.#settings, dayjs().format("dddd")).open
+    return dayjs().format(this.dateFormat + open)
+  }
+
+  timeClose() {
+    const hours = {
+      open: getDay(this.#settings, dayjs().format("dddd")).open,
+      close: getDay(this.#settings, dayjs().format("dddd")).close,
+    }
+
+    const time = {
+      open: dayjs().format(this.dateFormat + hours.start),
+      close: dayjs().format(this.dateFormat + hours.close),
+    }
+
+    // Increment 1 day, so spanning onto another day works correctly.
+    if (dayjs(time.open).isBefore(dayjs(time.close))) {
+      return dayjs(time.close).add(1, 'd').format(this.timeFormat)
+    } else {
+      return time.close
+    }
+  }
+
+  isAfterOpen(time) {
+    if (dayjs(time).isSameOrAfter(this.timeOpen())) {
+      return true
+    } else {
+      return false
+    }
+  }
+
+  isAfterClose(time) {
+    if (dayjs(time).isAfter(this.timeClose())) {
+      return true
+    } else {
+      return false
+    }
   }
 }
