@@ -17,7 +17,7 @@ export default function Index() {
         <div className="timeline-border">
           <AdminForm />
 
-          <style jsx>{`
+        <style jsx>{`
           .timeline-border {
             padding-right: 20px;
             padding-left: 20px;

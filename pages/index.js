@@ -25,8 +25,7 @@ export default function Index() {
         div#__next > div {
           font-size: 1.05em;
         }
-      `}
-      </style>
+      `}</style>
     </div>
   )
 }
