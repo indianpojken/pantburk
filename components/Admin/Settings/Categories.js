@@ -123,24 +123,24 @@ export default function Categories({ settings }) {
               defaultValue={c.borderColor}
               required />
           </div>
-            <div className="control">
-              <button
-                className="button"
-                type="button"
-                onClick={(_) => handleMove(c.id, "up")}
-                disabled={c.position === 1}>
-                Upp
-              </button>
-            </div>
-            <div className="control">
-              <button
-                className="button"
-                type="button"
-                onClick={(_) => handleMove(c.id, "down")}
-                disabled={c.position === settings.categories.length}>
-                Ner
-              </button>
-            </div>
+          <div className="control">
+            <button
+              className="button"
+              type="button"
+              onClick={(_) => handleMove(c.id, "up")}
+              disabled={c.position === 1}>
+              Upp
+            </button>
+          </div>
+          <div className="control">
+            <button
+              className="button"
+              type="button"
+              onClick={(_) => handleMove(c.id, "down")}
+              disabled={c.position === settings.categories.length}>
+              Ner
+            </button>
+          </div>
           <div className="control">
             <button
               className="button is-danger"
@@ -150,15 +150,14 @@ export default function Categories({ settings }) {
             </button>
           </div>
           <style jsx>{`
-          .color-input {
-            min-width: 54px;
-          }
+            .color-input {
+              min-width: 54px;
+            }
 
-          .duration-input {
-            max-width: 90px;
-          }
-        `}
-          </style>
+            .duration-input {
+              max-width: 90px;
+            }
+          `}</style>
         </div>
       ))}
       <div className="control is-expanded">

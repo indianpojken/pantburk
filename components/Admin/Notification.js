@@ -9,6 +9,11 @@ export default function Notification({ message }) {
     return (
       <div className="notification is-danger">
         {messages[message]}
+        <style jsx>{`
+            .notification {
+              margin-bottom: 24px;
+            }
+          `}</style>
       </div>
     )
   } else {

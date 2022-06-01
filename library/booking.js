@@ -23,7 +23,7 @@ export default class Booking {
     this.duration = booking.duration
 
     if (!this.timehelper.isAfterOpen(this.time.start)) {
-      this.time.start = timeOpen()
+      this.time.start = this.timehelper.timeOpen()
     }
 
     if (booking.end === undefined) {
