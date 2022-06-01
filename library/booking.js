@@ -71,7 +71,7 @@ export default class Booking {
       .format(this.timehelper.timeFormat)
 
     if (this.timehelper.isAfterClose(time)) {
-      return timeClose()
+      return this.timehelper.timeClose()
     } else {
       return time
     }

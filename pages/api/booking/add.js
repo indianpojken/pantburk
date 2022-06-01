@@ -1,7 +1,7 @@
 import dayjs from "dayjs"
 import { Op } from "sequelize"
 
-import { BookingModel, sequelize } from "./../../../models/booking"
+import { BookingModel } from "./../../../models/booking"
 
 import Booking from "./../../../library/booking"
 import TimeHelpers from "./../../../library/timehelpers"
@@ -9,8 +9,6 @@ import TimeHelpers from "./../../../library/timehelpers"
 export default async function handler(req, res) {
   const body = req.body
   const timehelpers = new TimeHelpers(body.settings)
-
-  await sequelize.sync()
 
   if (req.method === "POST") {
     if (!body.names || !body.category) {

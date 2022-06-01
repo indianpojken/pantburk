@@ -1,15 +1,18 @@
+import React from "react"
 import Head from "next/head"
 import useSWR from "swr"
 
 import Schedule from "./../components/Schedule"
 import AdminForm from "./../components/Admin/Form"
+import SettingsForm from "./../components/Admin/Settings"
 
 import TimeHelpers from "./../library/timehelpers"
 
 const fetcher = (...args) => fetch(...args).then(res => res.json())
 
 function getSettings() {
-  const { data, error } = useSWR("/api/settings", fetcher)
+  const { data, error } = useSWR("/api/settings", fetcher,
+  { refreshInterval: 500, refreshWhenHidden: true, refreshWhenOffline: true })
 
   return {
     settings: data,
@@ -17,23 +20,38 @@ function getSettings() {
   }
 }
 
-export default function Index() {
+export default function Admin() {
+  const [getToggleSettings, setToggleSettings] = React.useState(false)
   const { settings, error } = getSettings()
 
   if (error) return <div>Failed to load</div>
   if (!settings) return <div>Loading...</div>
 
-  if (new TimeHelpers(settings).isOpenToday()) {
-    return (
-      <div className="tile is-ancestor">
-        <Head>
-          <meta charSet="utf-8" />
-          <meta name="viewport" content="width=device-width, initial-scale=1" />
-          <title>Pantburk (Admin)</title>
-        </Head>
-        <div className="timeline-border">
-          <AdminForm settings={settings}/>
+  const toggleSettings = _ => {
+    if (getToggleSettings === false) {
+      setToggleSettings(true)
+    } else {
+      setToggleSettings(false)
+    }
+  }
 
+  return (
+    <div className="tile is-ancestor">
+      <Head>
+        <meta charSet="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Pantburk (Admin)</title>
+      </Head>
+      <div className="timeline-border">
+        <AdminForm settings={settings} />
+        {new TimeHelpers(settings).isOpenToday() &&
+          <button
+            className="button is-fullwidth"
+            onClick={toggleSettings}>
+            {getToggleSettings
+              ? "Schema"
+              : "Inställningar"}
+          </button>}
         <style jsx>{`
           .timeline-border {
             padding-right: 20px;
@@ -41,22 +59,16 @@ export default function Index() {
             border-right: 1px solid #E8E8E8;
           }
         `}</style>
-        </div>
-        <Schedule admin={true} settings={settings} />
       </div>
-    )
-  } else {
-    return (
-      <div>
-        <Head>
-          <meta charSet="utf-8" />
-          <meta name="viewport" content="width=device-width, initial-scale=1" />
-          <title>Pantburk (Admin)</title>
-        </Head>
-        <div>
-          <p>Stängt</p>
-        </div>
-      </div>
-    )
-  }
+      {new TimeHelpers(settings).isOpenToday()
+        ? <>
+          {getToggleSettings
+            ? <SettingsForm settings={settings} />
+            : <Schedule admin={true} settings={settings} />
+          }
+        </>
+        : <SettingsForm settings={settings} />
+      }
+    </div>
+  )
 }

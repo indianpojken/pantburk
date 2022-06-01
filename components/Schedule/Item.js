@@ -1,11 +1,15 @@
 import { useSWRConfig } from "swr"
 
-import { getCategory } from "../../library/settingshelpers"
+import { getCategory } from "./../../library/settingshelpers"
 import TimeHelpers from "./../../library/timehelpers"
 
 export default function Item({ booking, admin, settings }) {
   const timehelpers = new TimeHelpers(settings)
   const itemSettings = getCategory(settings, booking.category)
+
+  if (itemSettings === undefined) {
+    return (<></>)
+  }
 
   const color = {
     background: itemSettings.bgColor,
@@ -60,7 +64,7 @@ export default function Item({ booking, admin, settings }) {
 
       <style jsx>{`
         .booking {
-          grid-column: ${2 + position.column};
+          grid-column: ${1 + position.column};
           grid-row: ${position.start + 2} / ${position.end + 2};
           background-color: ${color.background};
           border-top: 1px solid ${color.border};

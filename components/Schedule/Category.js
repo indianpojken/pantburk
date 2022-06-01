@@ -1,4 +1,4 @@
-export default function Category({ title }) {
+export default function Category({ title, position }) {
   return (
     <div className="category has-text-weight-bold">
       {title}
@@ -6,6 +6,7 @@ export default function Category({ title }) {
         .category {
           text-align: center;
           grid-row: categories;
+          grid-column: ${1 + position};
         }
       `}</style>
     </div>

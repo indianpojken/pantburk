@@ -1,0 +1,172 @@
+import { useSWRConfig } from "swr"
+
+export default function Categories({ settings }) {
+  const { mutate } = useSWRConfig()
+
+  const deleteClick = async (id) => {
+    await fetch("/api/category/" + id, { method: "DELETE", })
+
+    mutate("/api/bookings")
+    mutate("/api/settings")
+
+    document.getElementById("categories").reset()
+  }
+
+  const handleMove = async (id, direction) => {
+    const data = {
+      id: id,
+      direction: direction,
+    }
+
+    const endpoint = "/api/category/move"
+
+    const options = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    }
+
+    const response = await fetch(endpoint, options)
+    const result = await response.json()
+
+    mutate("/api/bookings")
+    mutate("/api/settings")
+
+    document.getElementById("categories").reset()
+  }
+
+  const handleSubmit = async (event, id) => {
+    event.preventDefault()
+
+    
+    const data = []
+
+    for (let i = 0; i < settings.categories.length; i++) {
+      data.push(
+        {
+          position: Number(event.target.position[i].innerText),
+          title: event.target.title[i].value,
+          duration: Number(event.target.duration[i].value),
+          bgColor: event.target.bgColor[i].value,
+          borderColor: event.target.borderColor[i].value,
+        }
+      )
+    }
+
+    const endpoint = "/api/settings/categories"
+    
+    const options = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    }
+
+    const response = await fetch(endpoint, options)
+    const result = await response.json()
+
+    mutate("/api/bookings")
+    mutate("/api/settings")
+  }
+
+  if (settings.categories.length === 0) {
+    return (<></>)
+  }
+
+  return (
+    <form id="categories" autoComplete="off" onSubmit={handleSubmit}>
+      <label className="label">Kategorier</label>
+      {settings.categories.map((c, i) => (
+        <div className="field has-addons" key={i}>
+          <div className="control">
+            <button name="position" className="button is-static">
+              {c.position}
+            </button>
+          </div>
+          <div className="control">
+            <button className="button is-static">
+              {c.category}
+            </button>
+          </div>
+          <div className="control is-expanded">
+            <input
+              className="input"
+              type="text"
+              name="title"
+              defaultValue={c.title}
+              maxLength="20"
+              required />
+          </div>
+          <div className="control duration-input">
+            <input
+              className="input"
+              type="number"
+              name="duration"
+              min="1" max="1440" defaultValue={c.duration} required />
+          </div>
+          <div className="control color-input">
+            <input
+              className="input"
+              type="color"
+              name="bgColor"
+              defaultValue={c.bgColor}
+              required />
+          </div>
+          <div className="control color-input">
+            <input
+              className="input"
+              type="color"
+              name="borderColor"
+              defaultValue={c.borderColor}
+              required />
+          </div>
+          {c.position !== 1 &&
+            <div className="control">
+              <button
+                className="button"
+                type="button"
+                onClick={(_) => handleMove(c.id, "up")}>
+                Upp
+              </button>
+            </div>}
+          {c.position !== settings.categories.length &&
+            <div className="control">
+              <button
+                className="button"
+                type="button"
+                onClick={(_) => handleMove(c.id, "down")}>
+                Ner
+              </button>
+            </div>}
+          <div className="control">
+            <button
+              className="button is-danger"
+              type="button"
+              onClick={(_) => deleteClick(c.id)}>
+              Ta bort
+            </button>
+          </div>
+          <style jsx>{`
+          .color-input {
+            min-width: 54px;
+          }
+
+          .duration-input {
+            width: 108px;
+          }
+        `}
+          </style>
+        </div>
+      ))}
+      <div className="control is-expanded">
+        <button className="button is-link is-fullwidth">Spara</button>
+        {
+          // <button className="button is-link is-pulled-right">Spara</button>
+        }
+      </div>
+    </form>
+  )
+}

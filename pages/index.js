@@ -8,7 +8,8 @@ import TimeHelpers from "./../library/timehelpers"
 const fetcher = (...args) => fetch(...args).then(res => res.json())
 
 function getSettings() {
-  const { data, error } = useSWR("/api/settings", fetcher)
+  const { data, error } = useSWR("/api/settings", fetcher,
+  { refreshInterval: 500, refreshWhenHidden: true, refreshWhenOffline: true })
 
   return {
     settings: data,

@@ -95,8 +95,11 @@ export default function AdminForm({ settings }) {
               </select>
             </div>
           </div>
-          <div className="control">
-            <button className="button is-link">Lägg till</button>
+          <div className="control is-expanded">
+            {timehelpers.isOpenToday()
+              ? <button className="button is-link is-fullwidth">Lägg till</button>
+              : <button className="button is-link is-fullwidth" disabled>Lägg till</button>
+            }
           </div>
         </div>
       </form>

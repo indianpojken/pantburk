@@ -5,6 +5,7 @@ import Category from "./Schedule/Category"
 import Timeline from "./Schedule/Timeline"
 
 import TimeHelpers from "../library/timehelpers"
+import { getCategory } from "./../library/settingshelpers"
 
 const fetcher = (...args) => fetch(...args).then(res => res.json())
 
@@ -30,7 +31,11 @@ export default function Schedule({ admin, settings }) {
       <Timeline minutes={new TimeHelpers(settings).minutesOpen()} settings={settings} />
 
       {settings.categories.map((c, i) => (
-        <Category title={c.title} key={i} />
+        <Category
+          title={c.title}
+          position={getCategory(settings, c.category).position}
+          key={i}
+        />
       ))}
 
       {data.map((b, i) => (

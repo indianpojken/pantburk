@@ -21,7 +21,7 @@ export default class TimeHelpers {
   isOpenToday() {
     const today = getDay(this.#settings, dayjs().format("dddd"))
 
-    if (today.open === "") {
+    if (today.open === "" || today.close === "") {
       return false
     } else {
       return true
@@ -48,12 +48,12 @@ export default class TimeHelpers {
     }
 
     const time = {
-      open: dayjs().format(this.dateFormat + hours.start),
+      open: dayjs().format(this.dateFormat + hours.open),
       close: dayjs().format(this.dateFormat + hours.close),
     }
 
     // Increment 1 day, so spanning onto another day works correctly.
-    if (dayjs(time.open).isBefore(dayjs(time.close))) {
+    if (!dayjs(time.open).isBefore(dayjs(time.close))) {
       return dayjs(time.close).add(1, 'd').format(this.timeFormat)
     } else {
       return time.close

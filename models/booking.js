@@ -16,4 +16,4 @@ export const BookingModel = sequelize.define("Booking", {
   names: DataTypes.STRING,
   start: DataTypes.STRING,
   end: DataTypes.STRING,
-}, { timestamps: false })
+},{ timestamps: false })

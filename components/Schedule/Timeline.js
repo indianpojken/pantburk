@@ -4,7 +4,7 @@ import TimeHelpers from "./../../library/timehelpers"
 
 export default function Timeline({ settings }) {
   const time = []
-
+  
   for (let minute = 0; minute < new TimeHelpers(settings).minutesOpen(); minute++) {
     if (minute % 60 == 0 || minute % 30 == 0) {
       time.push(minute)
