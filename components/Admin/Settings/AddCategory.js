@@ -8,12 +8,13 @@ export default function AddCategory() {
 
     const data = {
       category: event.target.category.value,
-      title: event.target.title.value,
+      // title: event.target.title.value,
+      title: event.target.category.value,
       duration: event.target.duration.value,
       bgColor: event.target.bgColor.value,
       borderColor: event.target.borderColor.value,
     }
-
+    
     const endpoint = "/api/category/add"
 
     const options = {
@@ -54,6 +55,8 @@ export default function AddCategory() {
             maxLength="20"
             required />
         </div>
+        {
+        /*
         <div className="control is-expanded">
           <input
             className="input"
@@ -63,6 +66,8 @@ export default function AddCategory() {
             maxLength="20"
             required />
         </div>
+        */
+        }
         <div className="control duration-input">
           <input
             className="input"
@@ -86,8 +91,8 @@ export default function AddCategory() {
             defaultValue="#dbdbdb"
             required />
         </div>
-        <div className="control is-expanded">
-          <button className="button is-link is-fullwidth">Lägg till</button>
+        <div className="control">
+          <button className="button is-link">Lägg till</button>
         </div>
         <style jsx>{`
           .color-input {

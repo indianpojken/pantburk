@@ -40,7 +40,7 @@ export default function Categories({ settings }) {
   const handleSubmit = async (event, id) => {
     event.preventDefault()
 
-    
+
     const data = []
 
     for (let i = 0; i < settings.categories.length; i++) {
@@ -56,7 +56,7 @@ export default function Categories({ settings }) {
     }
 
     const endpoint = "/api/settings/categories"
-    
+
     const options = {
       method: "POST",
       headers: {
@@ -82,7 +82,7 @@ export default function Categories({ settings }) {
       {settings.categories.map((c, i) => (
         <div className="field has-addons" key={i}>
           <div className="control">
-            <button name="position" className="button is-static">
+            <button name="position" className="button is-static color-input">
               {c.position}
             </button>
           </div>
@@ -123,24 +123,24 @@ export default function Categories({ settings }) {
               defaultValue={c.borderColor}
               required />
           </div>
-          {c.position !== 1 &&
             <div className="control">
               <button
                 className="button"
                 type="button"
-                onClick={(_) => handleMove(c.id, "up")}>
+                onClick={(_) => handleMove(c.id, "up")}
+                disabled={c.position === 1}>
                 Upp
               </button>
-            </div>}
-          {c.position !== settings.categories.length &&
+            </div>
             <div className="control">
               <button
                 className="button"
                 type="button"
-                onClick={(_) => handleMove(c.id, "down")}>
+                onClick={(_) => handleMove(c.id, "down")}
+                disabled={c.position === settings.categories.length}>
                 Ner
               </button>
-            </div>}
+            </div>
           <div className="control">
             <button
               className="button is-danger"
@@ -155,7 +155,7 @@ export default function Categories({ settings }) {
           }
 
           .duration-input {
-            width: 108px;
+            max-width: 90px;
           }
         `}
           </style>
