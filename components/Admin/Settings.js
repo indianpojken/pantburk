@@ -24,7 +24,7 @@ export default function SettingsForm({ settings }) {
 
         .settings { 
           width: 100%;
-          overflow: scroll;
+          overflow: auto;
           margin-left: 0.08em;
           margin-right: 0.08em;
         }

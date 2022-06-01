@@ -1,5 +1,8 @@
 import { useSWRConfig } from "swr"
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faPlus } from "@fortawesome/free-solid-svg-icons"
+
 export default function AddCategory() {
   const { mutate } = useSWRConfig()
 
@@ -15,7 +18,7 @@ export default function AddCategory() {
       bgColor: event.target.bgColor.value,
       borderColor: event.target.borderColor.value,
     }
-    
+
     const endpoint = "/api/category/add"
 
     const options = {
@@ -43,9 +46,6 @@ export default function AddCategory() {
       onSubmit={handleSubmit}
       autoComplete="off">
       <label className="label">Lägg till kategori</label>
-      {
-        // <div className="field is-grouped">
-      }
       <div className="field has-addons">
         <div className="control is-expanded">
           <input
@@ -57,17 +57,17 @@ export default function AddCategory() {
             required />
         </div>
         {
-        /*
-        <div className="control is-expanded">
-          <input
-            className="input"
-            type="text"
-            placeholder="Titel"
-            name="title"
-            maxLength="20"
-            required />
-        </div>
-        */
+          /*
+          <div className="control is-expanded">
+            <input
+              className="input"
+              type="text"
+              placeholder="Titel"
+              name="title"
+              maxLength="20"
+              required />
+          </div>
+          */
         }
         <div className="control duration-input">
           <input
@@ -101,7 +101,11 @@ export default function AddCategory() {
             required />
         </div>
         <div className="control">
-          <button className="button is-link">Lägg till</button>
+          <button className="button is-link">
+            <span className="icon">
+              <FontAwesomeIcon icon={faPlus} />
+            </span>
+          </button>
         </div>
         <style jsx>{`
           .color-input {

@@ -8,6 +8,9 @@ import Notification from "./Notification"
 import { getCategory } from "../../library/settingshelpers"
 import TimeHelpers from "../../library/timehelpers"
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faCalendarPlus } from "@fortawesome/free-solid-svg-icons"
+
 export default function AdminForm({ settings }) {
   const [message, setMessage] = React.useState("")
   const timehelpers = new TimeHelpers(settings)
@@ -96,10 +99,14 @@ export default function AdminForm({ settings }) {
             </div>
           </div>
           <div className="control is-expanded">
-            {timehelpers.isOpenToday()
-              ? <button className="button is-link is-fullwidth">Lägg till</button>
-              : <button className="button is-link is-fullwidth" disabled>Lägg till</button>
-            }
+              <button
+                className="button is-link is-fullwidth"
+                disabled={!timehelpers.isOpenToday()}>
+                <span className="icon">
+                  <FontAwesomeIcon icon={faCalendarPlus} />
+                </span>
+                <span>Lägg till</span>
+              </button>
           </div>
         </div>
       </form>

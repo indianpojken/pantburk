@@ -1,5 +1,11 @@
 import { useSWRConfig } from "swr"
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import {
+  faAngleUp, faAngleDown, faTrashCan, faFloppyDisk
+} from "@fortawesome/free-solid-svg-icons"
+
+
 export default function Categories({ settings }) {
   const { mutate } = useSWRConfig()
 
@@ -150,7 +156,9 @@ export default function Categories({ settings }) {
               type="button"
               onClick={(_) => handleMove(c.id, "up")}
               disabled={c.position === 1}>
-              Upp
+              <span className="icon">
+                <FontAwesomeIcon icon={faAngleUp} />
+              </span>
             </button>
           </div>
           <div className="control">
@@ -159,7 +167,9 @@ export default function Categories({ settings }) {
               type="button"
               onClick={(_) => handleMove(c.id, "down")}
               disabled={c.position === settings.categories.length}>
-              Ner
+              <span className="icon">
+                <FontAwesomeIcon icon={faAngleDown} />
+              </span>
             </button>
           </div>
           <div className="control">
@@ -167,7 +177,9 @@ export default function Categories({ settings }) {
               className="button is-danger"
               type="button"
               onClick={(_) => deleteClick(c.id)}>
-              Ta bort
+              <span className="icon">
+                <FontAwesomeIcon icon={faTrashCan} />
+              </span>
             </button>
           </div>
           <style jsx>{`
@@ -182,7 +194,12 @@ export default function Categories({ settings }) {
         </div>
       ))}
       <div className="control is-expanded">
-        <button className="button is-link is-fullwidth">Spara</button>
+        <button className="button is-link is-fullwidth">
+          <span className="icon">
+            <FontAwesomeIcon icon={faFloppyDisk} />
+          </span>
+          <span>Spara</span>
+        </button>
         {
           // <button className="button is-link is-pulled-right">Spara</button>
         }

@@ -1,5 +1,8 @@
 import { useSWRConfig } from "swr"
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faFloppyDisk } from "@fortawesome/free-solid-svg-icons"
+
 const days = {
   "Monday": "Måndag",
   "Tuesday": "Tisdag",
@@ -66,7 +69,12 @@ export default function DaysSettings({ settings }) {
           </div>
         ))}
         <br />
-        <button className="button is-link is-fullwidth">Spara</button>
+        <button className="button is-link is-fullwidth">
+        <span className="icon">
+            <FontAwesomeIcon icon={faFloppyDisk} />
+          </span>
+          <span>Spara</span>
+        </button>
       </form>
     </div>
   )

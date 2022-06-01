@@ -8,11 +8,14 @@ import SettingsForm from "./../components/Admin/Settings"
 
 import TimeHelpers from "./../library/timehelpers"
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faSliders, faCalendar } from "@fortawesome/free-solid-svg-icons"
+
 const fetcher = (...args) => fetch(...args).then(res => res.json())
 
 function getSettings() {
   const { data, error } = useSWR("/api/settings", fetcher,
-  { refreshInterval: 500, refreshWhenHidden: true, refreshWhenOffline: true })
+    { refreshInterval: 500, refreshWhenHidden: true, refreshWhenOffline: true })
 
   return {
     settings: data,
@@ -46,11 +49,24 @@ export default function Admin() {
         <AdminForm settings={settings} />
         {new TimeHelpers(settings).isOpenToday() &&
           <button
-            className="button is-fullwidth"
+            className="button is-fullwidth is-link is-light"
             onClick={toggleSettings}>
             {getToggleSettings
-              ? "Schema"
-              : "Inställningar"}
+              ? 
+                <>
+                  <span className="icon">
+                    <FontAwesomeIcon icon={faCalendar} />
+                  </span>
+                  <span>Schema</span>
+                </>
+               : 
+                <>
+                  <span className="icon">
+                    <FontAwesomeIcon icon={faSliders} />
+                  </span>
+                  <span>Inställningar</span>
+                </>
+            }
           </button>}
         <style jsx>{`
           .timeline-border {
