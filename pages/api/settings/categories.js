@@ -9,6 +9,7 @@ export default async function handler(req, res) {
         {
           title: category.title,
           duration: category.duration,
+          fontColor: category.fontColor,
           bgColor: category.bgColor,
           borderColor: category.borderColor,
         },

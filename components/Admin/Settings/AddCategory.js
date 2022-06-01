@@ -11,6 +11,7 @@ export default function AddCategory() {
       // title: event.target.title.value,
       title: event.target.category.value,
       duration: event.target.duration.value,
+      fontColor: event.target.fontColor.value,
       bgColor: event.target.bgColor.value,
       borderColor: event.target.borderColor.value,
     }
@@ -74,6 +75,14 @@ export default function AddCategory() {
             type="number"
             name="duration"
             min="1" max="1440" defaultValue="60" required />
+        </div>
+        <div className="control color-input">
+          <input
+            className="input"
+            type="color"
+            name="fontColor"
+            defaultValue="#000"
+            required />
         </div>
         <div className="control color-input">
           <input

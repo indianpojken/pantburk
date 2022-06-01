@@ -40,19 +40,32 @@ export default function Categories({ settings }) {
   const handleSubmit = async (event, id) => {
     event.preventDefault()
 
-
     const data = []
 
-    for (let i = 0; i < settings.categories.length; i++) {
+    if (settings.categories.length === 1) {
       data.push(
         {
-          position: Number(event.target.position[i].innerText),
-          title: event.target.title[i].value,
-          duration: Number(event.target.duration[i].value),
-          bgColor: event.target.bgColor[i].value,
-          borderColor: event.target.borderColor[i].value,
+          position: Number(event.target.position.innerText),
+          title: event.target.title.value,
+          duration: Number(event.target.duration.value),
+          fontColor: event.target.fontColor.value,
+          bgColor: event.target.bgColor.value,
+          borderColor: event.target.borderColor.value,
         }
       )
+    } else {
+      for (let i = 0; i < settings.categories.length; i++) {
+        data.push(
+          {
+            position: Number(event.target.position[i].innerText),
+            title: event.target.title[i].value,
+            duration: Number(event.target.duration[i].value),
+            fontColor: event.target.fontColor[i].value,
+            bgColor: event.target.bgColor[i].value,
+            borderColor: event.target.borderColor[i].value,
+          }
+        )
+      }
     }
 
     const endpoint = "/api/settings/categories"
@@ -106,6 +119,14 @@ export default function Categories({ settings }) {
               type="number"
               name="duration"
               min="1" max="1440" defaultValue={c.duration} required />
+          </div>
+          <div className="control color-input">
+            <input
+              className="input"
+              type="color"
+              name="fontColor"
+              defaultValue={c.fontColor}
+              required />
           </div>
           <div className="control color-input">
             <input

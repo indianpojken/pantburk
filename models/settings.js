@@ -27,6 +27,7 @@ export const CategoriesModel = sequelize.define("Categories", {
   category: DataTypes.STRING,
   title: DataTypes.STRING,
   duration: DataTypes.INTEGER,
+  fontColor: DataTypes.STRING,
   bgColor: DataTypes.STRING,
   borderColor: DataTypes.STRING,
 }, { timestamps: false })

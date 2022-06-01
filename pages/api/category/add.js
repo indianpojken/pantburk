@@ -11,6 +11,7 @@ export default async function handler(req, res) {
       category: body.category,
       title: body.title,
       duration: body.duration,
+      fontColor: body.fontColor,
       bgColor: body.bgColor,
       borderColor: body.borderColor,
     })

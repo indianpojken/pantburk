@@ -12,8 +12,9 @@ export default function Item({ booking, admin, settings }) {
   }
 
   const color = {
+    font: itemSettings.fontColor,
     background: itemSettings.bgColor,
-    border: itemSettings.borderColor
+    border: itemSettings.borderColor,
   }
 
   const position = {
@@ -72,7 +73,7 @@ export default function Item({ booking, admin, settings }) {
           overflow: hidden;
         }
 
-        .entry { min-height: 100%; }
+        .entry { min-height: 100%; color: ${color.font};}
 
         .time-bottom {
           position: relative;
