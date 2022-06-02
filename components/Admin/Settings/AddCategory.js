@@ -3,7 +3,7 @@ import { useSWRConfig } from "swr"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faPlus } from "@fortawesome/free-solid-svg-icons"
 
-export default function AddCategory() {
+export default function AddCategory({ notification }) {
   const { mutate } = useSWRConfig()
 
   const handleSubmit = async (event) => {
@@ -33,7 +33,10 @@ export default function AddCategory() {
     const result = await response.json()
 
     if (result.status === "ok") {
+      notification("")
       document.getElementById("addcategory").reset()
+    } else if (result.message === "duplicate") {
+      notification("En annan kategori med samma namn, existerar redan.")
     }
 
     mutate("/api/bookings")

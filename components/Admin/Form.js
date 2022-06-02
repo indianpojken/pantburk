@@ -3,16 +3,19 @@ import dayjs from "dayjs"
 
 import { useSWRConfig } from "swr"
 
-import Notification from "./Notification"
-
 import { getCategory } from "../../library/settingshelpers"
 import TimeHelpers from "../../library/timehelpers"
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faCalendarPlus } from "@fortawesome/free-solid-svg-icons"
 
-export default function AdminForm({ settings }) {
-  const [message, setMessage] = React.useState("")
+const messages = {
+  "conflict": "Bokning kunde inte läggas till, då tid krockar.",
+  "before-open": "Bokning kunde inte läggas till, starttid är före öppningstid.",
+  "after-close": "Bokning kunde inte läggas till, sluttid är efter stängningstid.",
+}
+
+export default function AdminForm({ settings, setMessage }) {
   const timehelpers = new TimeHelpers(settings)
 
   const time = {
@@ -50,7 +53,7 @@ export default function AdminForm({ settings }) {
       setMessage("")
       document.getElementById("superdupermegaform").reset()
     } else {
-      setMessage(result.message)
+      setMessage(messages[result.message])
     }
 
     mutate("/api/bookings")
@@ -110,9 +113,6 @@ export default function AdminForm({ settings }) {
           </div>
         </div>
       </form>
-
-      <br />
-      <Notification message={message} />
     </div>
   )
 }

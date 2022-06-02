@@ -1,4 +1,7 @@
+import React from "react"
 import { useSWRConfig } from "swr"
+
+import Notification from "../../Notification"
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faFloppyDisk } from "@fortawesome/free-solid-svg-icons"
@@ -14,6 +17,8 @@ const days = {
 }
 
 export default function DaysSettings({ settings }) {
+  const [notification, setNotification] = React.useState("")
+  const [notificationType, setNotificationType] = React.useState("")
   const { mutate } = useSWRConfig()
 
   const handleSubmit = async (event) => {
@@ -39,7 +44,10 @@ export default function DaysSettings({ settings }) {
 
     const response = await fetch(endpoint, options)
     const result = await response.json()
-    
+
+    setNotificationType("success")
+    setNotification("Sparat ändringar.")
+
     mutate("/api/settings")
   }
 
@@ -70,12 +78,18 @@ export default function DaysSettings({ settings }) {
         ))}
         <br />
         <button className="button is-link is-fullwidth">
-        <span className="icon">
+          <span className="icon">
             <FontAwesomeIcon icon={faFloppyDisk} />
           </span>
           <span>Spara</span>
         </button>
       </form>
+      <Notification
+        message={notification}
+        setMessage={setNotification}
+        timeout={1000}
+        type={notificationType}
+      />
     </div>
   )
 }

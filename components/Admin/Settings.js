@@ -1,8 +1,13 @@
+import React from "react"
+
 import DaysSettings from "./Settings/Days"
 import AddCategory from "./Settings/AddCategory"
 import Categories from "./Settings/Categories"
+import Notification from "./../Notification"
 
 export default function SettingsForm({ settings }) {
+  const [addNotification, setAddNotification] = React.useState("")
+
   return (
     <div className="columns settings">
       <div className="column is-narrow settings-border">
@@ -10,10 +15,14 @@ export default function SettingsForm({ settings }) {
         <br />
       </div>
       <div className="column">
-        <AddCategory />
+        <AddCategory notification={setAddNotification} />
         <br />
         <Categories settings={settings} />
-        <br />
+        <Notification
+          message={addNotification}
+          setMessage={setAddNotification}
+          type="error"
+        />
       </div>
 
       <style jsx>

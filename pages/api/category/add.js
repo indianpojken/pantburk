@@ -3,6 +3,14 @@ import { CategoriesModel } from "./../../../models/settings"
 export default async function handler(req, res) {
   const body = req.body
 
+  const duplicate = await CategoriesModel.findOne(
+    { where: { category: body.category } }
+  )
+
+  if (duplicate) {
+    return res.status(400).json({ status: "error", message: "duplicate" })
+  }
+
   if (req.method === "POST") {
     const position = await CategoriesModel.max("position")
 
