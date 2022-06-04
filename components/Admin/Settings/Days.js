@@ -1,5 +1,5 @@
 import React from "react"
-import { useSWRConfig } from "swr"
+import io from "Socket.IO-client"
 
 import Notification from "../../Notification"
 
@@ -19,10 +19,12 @@ const days = {
 export default function DaysSettings({ settings }) {
   const [notification, setNotification] = React.useState("")
   const [notificationType, setNotificationType] = React.useState("")
-  const { mutate } = useSWRConfig()
 
   const handleSubmit = async (event) => {
     event.preventDefault()
+
+    const socket = io()
+    await fetch("/api/socket")
 
     const data = []
 
@@ -48,7 +50,7 @@ export default function DaysSettings({ settings }) {
     setNotificationType("success")
     setNotification("Sparat ändringar.")
 
-    mutate("/api/settings")
+    socket.emit("data-updated", true)
   }
 
   return (

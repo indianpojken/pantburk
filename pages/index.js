@@ -1,27 +1,52 @@
+import React from "react"
 import Head from "next/head"
-import useSWR from "swr"
+import io from "Socket.IO-client"
 
 import Schedule from "./../components/Schedule"
 
 import TimeHelpers from "./../library/timehelpers"
 
-const fetcher = (...args) => fetch(...args).then(res => res.json())
-
-function getSettings() {
-  const { data, error } = useSWR("/api/settings", fetcher,
-  { refreshInterval: 500, refreshWhenHidden: true, refreshWhenOffline: true })
-
-  return {
-    settings: data,
-    error: error,
-  }
+async function fetchSettings() {
+  const response = await fetch("/api/settings")
+  const result = await response.json()
+  return result
 }
 
+async function fetchBookings() {
+  const response = await fetch("/api/bookings")
+  const result = await response.json()
+  return result
+}
+
+let socket
+
 export default function Index() {
-  const { settings, error } = getSettings()
-  
-  if (error) return <div>Failed to load</div>
-  if (!settings) return <div>Loading...</div>
+  const [settings, setSettings] = React.useState()
+  const [bookings, setBookings] = React.useState()
+
+  React.useEffect(async () => {
+    const settings = await fetchSettings()
+    setSettings(settings)
+
+    const bookings = await fetchBookings()
+    setBookings(bookings)
+
+    socket = io()
+    await fetch("/api/socket")
+
+    socket.on("update-data", async () => {
+      const _settings = await fetchSettings()
+      setSettings(_settings)
+
+      const _bookings = await fetchBookings()
+      setBookings(_bookings)
+    })
+  }, [])
+
+
+  //if (data) return <div>Failed to load</div>
+  if (!settings) return <></>
+  if (!bookings) return <></>
 
   return (
     <div>
@@ -31,7 +56,7 @@ export default function Index() {
         <title>Pantburk</title>
       </Head>
       {new TimeHelpers(settings).isOpenToday()
-        ? <Schedule admin={false} settings={settings} />
+        ? <Schedule admin={false} settings={settings} bookings={bookings} />
         : <p>Stängt</p>
       }
       <style jsx global>{`

@@ -1,13 +1,14 @@
-import { useSWRConfig } from "swr"
+import io from "Socket.IO-client"
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faPlus } from "@fortawesome/free-solid-svg-icons"
 
 export default function AddCategory({ notification }) {
-  const { mutate } = useSWRConfig()
-
   const handleSubmit = async (event) => {
     event.preventDefault()
+
+    const socket = io()
+    await fetch("/api/socket")
 
     const data = {
       category: event.target.category.value,
@@ -39,8 +40,7 @@ export default function AddCategory({ notification }) {
       notification("En annan kategori med samma namn, existerar redan.")
     }
 
-    mutate("/api/bookings")
-    mutate("/api/settings")
+    socket.emit("data-updated", true)
   }
 
   return (

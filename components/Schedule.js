@@ -1,4 +1,4 @@
-import useSWR from "swr"
+import React from "react"
 
 import Item from "./Schedule/Item"
 import Category from "./Schedule/Category"
@@ -7,23 +7,9 @@ import Timeline from "./Schedule/Timeline"
 import TimeHelpers from "../library/timehelpers"
 import { getCategory } from "./../library/settingshelpers"
 
-const fetcher = (...args) => fetch(...args).then(res => res.json())
-
-function getBookings() {
-  const { data, error } = useSWR("/api/bookings", fetcher,
-    { refreshInterval: 500, refreshWhenHidden: true, refreshWhenOffline: true })
-
-  return {
-    data: data,
-    error: error,
-  }
-}
-
-export default function Schedule({ admin, settings }) {
-  const { data, error } = getBookings()
-
-  if (error) return <div>Failed to load</div>
-  if (!data) return <div>Loading...</div>
+export default function Schedule({ admin, settings, bookings }) {
+  //if (error) return <div>Failed to load</div>
+  if (!bookings) return <div>Loading...</div>
 
   return (
     <div className="schedule">
@@ -38,7 +24,7 @@ export default function Schedule({ admin, settings }) {
         />
       ))}
 
-      {data.map((b, i) => (
+      {bookings.map((b, i) => (
         <Item booking={b} admin={admin} settings={settings} key={i} />
       ))}
 

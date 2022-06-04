@@ -21,6 +21,7 @@ export default function SettingsForm({ settings }) {
         <Notification
           message={addNotification}
           setMessage={setAddNotification}
+          timeout={4000}
           type="error"
         />
       </div>

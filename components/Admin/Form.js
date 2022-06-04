@@ -1,7 +1,7 @@
 import React from "react"
 import dayjs from "dayjs"
 
-import { useSWRConfig } from "swr"
+import io from "Socket.IO-client"
 
 import { getCategory } from "../../library/settingshelpers"
 import TimeHelpers from "../../library/timehelpers"
@@ -23,10 +23,11 @@ export default function AdminForm({ settings, setMessage }) {
     close: dayjs(timehelpers.timeClose()).format("HH:mm"),
   }
 
-  const { mutate } = useSWRConfig()
-
   const handleSubmit = async (event) => {
     event.preventDefault()
+
+    const socket = io()
+    await fetch("/api/socket")
 
     const data = {
       names: event.target.names.value,
@@ -51,18 +52,18 @@ export default function AdminForm({ settings, setMessage }) {
 
     if (result.status === "ok") {
       setMessage("")
-      document.getElementById("superdupermegaform").reset()
+      document.getElementById("AdminForm").reset()
     } else {
       setMessage(messages[result.message])
     }
 
-    mutate("/api/bookings")
+    socket.emit("data-updated", true)
   }
 
   return (
     <div>
       <form
-        id="superdupermegaform"
+        id="AdminForm"
         onSubmit={handleSubmit}
         autoComplete="off">
         <div className="field">
@@ -102,14 +103,14 @@ export default function AdminForm({ settings, setMessage }) {
             </div>
           </div>
           <div className="control is-expanded">
-              <button
-                className="button is-link is-fullwidth"
-                disabled={!timehelpers.isOpenToday()}>
-                <span className="icon">
-                  <FontAwesomeIcon icon={faCalendarPlus} />
-                </span>
-                <span>Lägg till</span>
-              </button>
+            <button
+              className="button is-link is-fullwidth"
+              disabled={!timehelpers.isOpenToday()}>
+              <span className="icon">
+                <FontAwesomeIcon icon={faCalendarPlus} />
+              </span>
+              <span>Lägg till</span>
+            </button>
           </div>
         </div>
       </form>

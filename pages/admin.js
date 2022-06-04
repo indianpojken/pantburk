@@ -1,6 +1,9 @@
 import React from "react"
 import Head from "next/head"
-import useSWR from "swr"
+import io from "Socket.IO-client"
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faSliders, faCalendar } from "@fortawesome/free-solid-svg-icons"
 
 import Schedule from "./../components/Schedule"
 import AdminForm from "./../components/Admin/Form"
@@ -9,28 +12,48 @@ import Notification from "../components/Notification"
 
 import TimeHelpers from "./../library/timehelpers"
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faSliders, faCalendar } from "@fortawesome/free-solid-svg-icons"
-
-const fetcher = (...args) => fetch(...args).then(res => res.json())
-
-function getSettings() {
-  const { data, error } = useSWR("/api/settings", fetcher,
-    { refreshInterval: 500, refreshWhenHidden: true, refreshWhenOffline: true })
-
-  return {
-    settings: data,
-    error: error,
-  }
+async function fetchSettings() {
+  const response = await fetch("/api/settings")
+  const result = await response.json()
+  return result
 }
+
+async function fetchBookings() {
+  const response = await fetch("/api/bookings")
+  const result = await response.json()
+  return result
+}
+
+let socket
 
 export default function Admin() {
   const [getToggleSettings, setToggleSettings] = React.useState(false)
   const [notification, setNotification] = React.useState("")
-  const { settings, error } = getSettings()
+  const [settings, setSettings] = React.useState()
+  const [bookings, setBookings] = React.useState()
 
-  if (error) return <div>Failed to load</div>
-  if (!settings) return <div>Loading...</div>
+  React.useEffect(async () => {
+    const settings = await fetchSettings()
+    setSettings(settings)
+
+    const bookings = await fetchBookings()
+    setBookings(bookings)
+
+    socket = io()
+    await fetch("/api/socket")
+
+    socket.on("update-data", async () => {
+      const _settings = await fetchSettings()
+      setSettings(_settings)
+
+      const _bookings = await fetchBookings()
+      setBookings(_bookings)
+    })
+  }, [])
+
+  //if (error) return <div>Failed to load</div>
+  if (!settings) return <></>
+  if (!bookings) return <></>
 
   const toggleSettings = _ => {
     if (getToggleSettings === false) {
@@ -74,6 +97,7 @@ export default function Admin() {
         <Notification
           message={notification}
           setMessage={setNotification}
+          timeout={4000}
           type="error"
         />
         <style jsx>{`
@@ -88,7 +112,7 @@ export default function Admin() {
         ? <>
           {getToggleSettings
             ? <SettingsForm settings={settings} />
-            : <Schedule admin={true} settings={settings} />
+            : <Schedule admin={true} settings={settings} bookings={bookings} />
           }
         </>
         : <SettingsForm settings={settings} />

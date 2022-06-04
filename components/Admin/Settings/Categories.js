@@ -1,23 +1,29 @@
 import React from "react"
-import { useSWRConfig } from "swr"
+import io from "Socket.IO-client"
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+
 import {
   faAngleUp, faAngleDown, faTrashCan, faFloppyDisk
 } from "@fortawesome/free-solid-svg-icons"
 
 import Notification from "../../Notification"
 
+let socket
+
 export default function Categories({ settings }) {
   const [notification, setNotification] = React.useState("")
   const [notificationType, setNotificationType] = React.useState("")
-  const { mutate } = useSWRConfig()
+
+  React.useEffect(async () => {
+    socket = io()
+    await fetch("/api/socket")
+  })
 
   const deleteClick = async (id) => {
     await fetch("/api/category/" + id, { method: "DELETE", })
 
-    mutate("/api/bookings")
-    mutate("/api/settings")
+    socket.emit("data-updated", true)
 
     document.getElementById("categories").reset()
   }
@@ -41,8 +47,7 @@ export default function Categories({ settings }) {
     const response = await fetch(endpoint, options)
     const result = await response.json()
 
-    mutate("/api/bookings")
-    mutate("/api/settings")
+    socket.emit("data-updated", true)
 
     document.getElementById("categories").reset()
   }
@@ -94,8 +99,7 @@ export default function Categories({ settings }) {
     setNotificationType("success")
     setNotification("Sparat ändringar.")
 
-    mutate("/api/bookings")
-    mutate("/api/settings")
+    socket.emit("data-updated", true)
   }
 
   if (settings.categories.length === 0) {

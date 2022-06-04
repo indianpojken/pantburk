@@ -1,4 +1,4 @@
-import { useSWRConfig } from "swr"
+import io from "Socket.IO-client"
 
 import { getCategory } from "./../../library/settingshelpers"
 import TimeHelpers from "./../../library/timehelpers"
@@ -27,11 +27,13 @@ export default function Item({ booking, admin, settings }) {
     ),
   }
 
-  const { mutate } = useSWRConfig()
-
   const deleteClick = async (id) => {
+    const socket = io()
+    await fetch("/api/socket")
+
     await fetch("/api/booking/" + id, { method: "DELETE", })
-    mutate("/api/bookings")
+
+    socket.emit("data-updated", true)
   }
 
   return (
