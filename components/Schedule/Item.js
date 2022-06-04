@@ -7,7 +7,7 @@ export default function Item({ booking, admin, settings }) {
   const timehelpers = new TimeHelpers(settings)
   const itemSettings = getCategory(settings, booking.category)
 
-  if (itemSettings === undefined) {
+  if (!itemSettings) {
     return (<></>)
   }
 
@@ -45,10 +45,11 @@ export default function Item({ booking, admin, settings }) {
             <p className="column">
               {booking.start.substring(10, 16)}
             </p>
-            {admin === true &&
+            {admin &&
               <button
                 className="delete is-small delete-button"
-                onClick={(_) => deleteClick(booking.id)}>
+                onClick={() => deleteClick(booking.id)}
+              >
               </button>}
           </div>
         </div>

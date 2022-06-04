@@ -26,7 +26,7 @@ export default class Booking {
       this.time.start = this.timehelper.timeOpen()
     }
 
-    if (booking.end === undefined) {
+    if (!booking.end) {
       this.time.end = this.#endTime()
     }
   }

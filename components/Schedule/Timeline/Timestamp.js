@@ -8,8 +8,13 @@ export default function Timestamp({ minute, settings }) {
       {minute % 60 === 0
         ? "time time-border is-size-6 has-text-weight-semibold"
         : "time time-border is-size-7"
-      }>
-      {dayjs(new TimeHelpers(settings).timeOpen()).add(minute, "m").format("HH:mm")}
+      }
+    >
+
+      {dayjs(new TimeHelpers(settings)
+        .timeOpen())
+        .add(minute, "m")
+        .format("HH:mm")}
 
       <style jsx>{`
         .time {

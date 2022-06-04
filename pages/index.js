@@ -6,14 +6,8 @@ import Schedule from "./../components/Schedule"
 
 import TimeHelpers from "./../library/timehelpers"
 
-async function fetchSettings() {
-  const response = await fetch("/api/settings")
-  const result = await response.json()
-  return result
-}
-
-async function fetchBookings() {
-  const response = await fetch("/api/bookings")
+async function fetchData(endpoint) {
+  const response = await fetch(endpoint)
   const result = await response.json()
   return result
 }
@@ -24,29 +18,22 @@ export default function Index() {
   const [settings, setSettings] = React.useState()
   const [bookings, setBookings] = React.useState()
 
-  React.useEffect(async () => {
-    const settings = await fetchSettings()
-    setSettings(settings)
+  React.useEffect(() => {
+    (async () => {
+      setSettings(await fetchData("/api/settings"))
+      setBookings(await fetchData("/api/bookings"))
 
-    const bookings = await fetchBookings()
-    setBookings(bookings)
+      socket = io()
+      await fetch("/api/socket")
 
-    socket = io()
-    await fetch("/api/socket")
-
-    socket.on("update-data", async () => {
-      const _settings = await fetchSettings()
-      setSettings(_settings)
-
-      const _bookings = await fetchBookings()
-      setBookings(_bookings)
-    })
+      socket.on("update-data", async () => {
+        setSettings(await fetchData("/api/settings"))
+        setBookings(await fetchData("/api/bookings"))
+      })
+    })()
   }, [])
 
-
-  //if (data) return <div>Failed to load</div>
-  if (!settings) return <></>
-  if (!bookings) return <></>
+  if (!settings || !bookings) return (<></>)
 
   return (
     <div>
@@ -56,8 +43,13 @@ export default function Index() {
         <title>Pantburk</title>
       </Head>
       {new TimeHelpers(settings).isOpenToday()
-        ? <Schedule admin={false} settings={settings} bookings={bookings} />
-        : <p>Stängt</p>
+        ?
+        <Schedule
+          admin={false}
+          settings={settings}
+          bookings={bookings}
+        />
+        : <></>
       }
       <style jsx global>{`
         // https://gist.github.com/dmurawsky/d45f068097d181c733a53687edce1919

@@ -2,12 +2,11 @@ import React from "react"
 import io from "Socket.IO-client"
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-
 import {
   faAngleUp, faAngleDown, faTrashCan, faFloppyDisk
 } from "@fortawesome/free-solid-svg-icons"
 
-import Notification from "../../Notification"
+import Notification from "./../../Notification"
 
 let socket
 
@@ -15,9 +14,11 @@ export default function Categories({ settings }) {
   const [notification, setNotification] = React.useState("")
   const [notificationType, setNotificationType] = React.useState("")
 
-  React.useEffect(async () => {
-    socket = io()
-    await fetch("/api/socket")
+  React.useEffect(() => {
+    (async () => {
+      socket = io()
+      await fetch("/api/socket")
+    })()
   })
 
   const deleteClick = async (id) => {
@@ -108,18 +109,22 @@ export default function Categories({ settings }) {
 
   return (
     <>
-      <form id="categories" autoComplete="off" onSubmit={handleSubmit}>
+      <form
+        id="categories"
+        autoComplete="off"
+        onSubmit={handleSubmit}
+      >
         <label className="label">Kategorier</label>
-        {settings.categories.map((c, i) => (
+        {settings.categories.map((category, i) => (
           <div className="field has-addons" key={i}>
             <div className="control">
               <button name="position" className="button is-static color-input">
-                {c.position}
+                {category.position}
               </button>
             </div>
             <div className="control">
               <button className="button is-static">
-                {c.category}
+                {category.category}
               </button>
             </div>
             <div className="control is-expanded">
@@ -127,7 +132,7 @@ export default function Categories({ settings }) {
                 className="input"
                 type="text"
                 name="title"
-                defaultValue={c.title}
+                defaultValue={category.title}
                 maxLength="20"
                 required />
             </div>
@@ -136,38 +141,46 @@ export default function Categories({ settings }) {
                 className="input"
                 type="number"
                 name="duration"
-                min="1" max="1440" defaultValue={c.duration} required />
+                min="1"
+                max="1440"
+                defaultValue={category.duration}
+                required
+              />
             </div>
             <div className="control color-input">
               <input
                 className="input"
                 type="color"
                 name="fontColor"
-                defaultValue={c.fontColor}
-                required />
+                defaultValue={category.fontColor}
+                required
+              />
             </div>
             <div className="control color-input">
               <input
                 className="input"
                 type="color"
                 name="bgColor"
-                defaultValue={c.bgColor}
-                required />
+                defaultValue={category.bgColor}
+                required
+              />
             </div>
             <div className="control color-input">
               <input
                 className="input"
                 type="color"
                 name="borderColor"
-                defaultValue={c.borderColor}
-                required />
+                defaultValue={category.borderColor}
+                required
+              />
             </div>
             <div className="control">
               <button
                 className="button"
                 type="button"
-                onClick={(_) => handleMove(c.id, "up")}
-                disabled={c.position === 1}>
+                onClick={() => handleMove(category.id, "up")}
+                disabled={category.position === 1}
+              >
                 <span className="icon">
                   <FontAwesomeIcon icon={faAngleUp} />
                 </span>
@@ -177,8 +190,9 @@ export default function Categories({ settings }) {
               <button
                 className="button"
                 type="button"
-                onClick={(_) => handleMove(c.id, "down")}
-                disabled={c.position === settings.categories.length}>
+                onClick={() => handleMove(category.id, "down")}
+                disabled={category.position === settings.categories.length}
+              >
                 <span className="icon">
                   <FontAwesomeIcon icon={faAngleDown} />
                 </span>
@@ -188,7 +202,8 @@ export default function Categories({ settings }) {
               <button
                 className="button is-danger"
                 type="button"
-                onClick={(_) => deleteClick(c.id)}>
+                onClick={() => deleteClick(category.id)}
+              >
                 <span className="icon">
                   <FontAwesomeIcon icon={faTrashCan} />
                 </span>
@@ -212,9 +227,6 @@ export default function Categories({ settings }) {
             </span>
             <span>Spara</span>
           </button>
-          {
-            // <button className="button is-link is-pulled-right">Spara</button>
-          }
         </div>
       </form>
       <Notification

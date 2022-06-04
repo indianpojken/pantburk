@@ -1,13 +1,12 @@
 import React from "react"
 import dayjs from "dayjs"
-
 import io from "Socket.IO-client"
-
-import { getCategory } from "../../library/settingshelpers"
-import TimeHelpers from "../../library/timehelpers"
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faCalendarPlus } from "@fortawesome/free-solid-svg-icons"
+
+import { getCategory } from "./../../library/settingshelpers"
+import TimeHelpers from "./../../library/timehelpers"
 
 const messages = {
   "conflict": "Bokning kunde inte läggas till, då tid krockar.",
@@ -65,7 +64,8 @@ export default function AdminForm({ settings, setMessage }) {
       <form
         id="AdminForm"
         onSubmit={handleSubmit}
-        autoComplete="off">
+        autoComplete="off"
+      >
         <div className="field">
           <label className="label">Namn</label>
           <div className="control">
@@ -75,7 +75,8 @@ export default function AdminForm({ settings, setMessage }) {
               placeholder="Namn"
               name="names"
               maxLength="30"
-              required />
+              required
+            />
           </div>
         </div>
         <div className="field">
@@ -86,7 +87,8 @@ export default function AdminForm({ settings, setMessage }) {
               type="time" name="start"
               min={time.open}
               max={time.close}
-              step="60" />
+              step="60"
+            />
           </div>
         </div>
         <label className="label">Kategori</label>
@@ -94,9 +96,9 @@ export default function AdminForm({ settings, setMessage }) {
           <div className="control">
             <div className="select">
               <select name="category" required>
-                {settings.categories.map((c, i) => (
-                  <option value={c.category} key={i} >
-                    {c.title}
+                {settings.categories.map((category, i) => (
+                  <option value={category.category} key={i} >
+                    {category.title}
                   </option>
                 ))}
               </select>
@@ -105,7 +107,8 @@ export default function AdminForm({ settings, setMessage }) {
           <div className="control is-expanded">
             <button
               className="button is-link is-fullwidth"
-              disabled={!timehelpers.isOpenToday()}>
+              disabled={!timehelpers.isOpenToday()}
+            >
               <span className="icon">
                 <FontAwesomeIcon icon={faCalendarPlus} />
               </span>

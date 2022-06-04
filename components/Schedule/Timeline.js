@@ -4,8 +4,9 @@ import TimeHelpers from "./../../library/timehelpers"
 
 export default function Timeline({ settings }) {
   const time = []
+  const minutesOpen = new TimeHelpers(settings).minutesOpen()
   
-  for (let minute = 0; minute < new TimeHelpers(settings).minutesOpen(); minute++) {
+  for (let minute = 0; minute < minutesOpen; minute++) {
     if (minute % 60 == 0 || minute % 30 == 0) {
       time.push(minute)
     }

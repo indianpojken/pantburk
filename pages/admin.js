@@ -8,18 +8,12 @@ import { faSliders, faCalendar } from "@fortawesome/free-solid-svg-icons"
 import Schedule from "./../components/Schedule"
 import AdminForm from "./../components/Admin/Form"
 import SettingsForm from "./../components/Admin/Settings"
-import Notification from "../components/Notification"
+import Notification from "./../components/Notification"
 
 import TimeHelpers from "./../library/timehelpers"
 
-async function fetchSettings() {
-  const response = await fetch("/api/settings")
-  const result = await response.json()
-  return result
-}
-
-async function fetchBookings() {
-  const response = await fetch("/api/bookings")
+async function fetchData(endpoint) {
+  const response = await fetch(endpoint)
   const result = await response.json()
   return result
 }
@@ -27,41 +21,34 @@ async function fetchBookings() {
 let socket
 
 export default function Admin() {
-  const [getToggleSettings, setToggleSettings] = React.useState(false)
-  const [notification, setNotification] = React.useState("")
   const [settings, setSettings] = React.useState()
   const [bookings, setBookings] = React.useState()
 
-  React.useEffect(async () => {
-    const settings = await fetchSettings()
-    setSettings(settings)
+  const [getToggleSettings, setToggleSettings] = React.useState(false)
+  const [notification, setNotification] = React.useState("")
 
-    const bookings = await fetchBookings()
-    setBookings(bookings)
+  React.useEffect(() => {
+    (async () => {
+      setSettings(await fetchData("/api/settings"))
+      setBookings(await fetchData("/api/bookings"))
 
-    socket = io()
-    await fetch("/api/socket")
+      socket = io()
+      await fetch("/api/socket")
 
-    socket.on("update-data", async () => {
-      const _settings = await fetchSettings()
-      setSettings(_settings)
-
-      const _bookings = await fetchBookings()
-      setBookings(_bookings)
-    })
+      socket.on("update-data", async () => {
+        setSettings(await fetchData("/api/settings"))
+        setBookings(await fetchData("/api/bookings"))
+      })
+    })()
   }, [])
 
-  //if (error) return <div>Failed to load</div>
-  if (!settings) return <></>
-  if (!bookings) return <></>
+  if (!settings || !bookings) return (<></>)
 
-  const toggleSettings = _ => {
-    if (getToggleSettings === false) {
-      setToggleSettings(true)
-    } else {
-      setToggleSettings(false)
-    }
+  const toggleSettings = () => {
+    setToggleSettings(!getToggleSettings)
   }
+
+  const isOpenToday = new TimeHelpers(settings).isOpenToday()
 
   return (
     <div className="tile is-ancestor">
@@ -71,12 +58,16 @@ export default function Admin() {
         <title>Pantburk (Admin)</title>
       </Head>
       <div className="timeline-border">
-        <AdminForm settings={settings} setMessage={setNotification} />
+        <AdminForm
+          settings={settings}
+          setMessage={setNotification}
+        />
         <br />
-        {new TimeHelpers(settings).isOpenToday() &&
+        {isOpenToday &&
           <button
             className="button is-fullwidth is-link is-light"
-            onClick={toggleSettings}>
+            onClick={toggleSettings}
+          >
             {getToggleSettings
               ?
               <>
@@ -108,11 +99,17 @@ export default function Admin() {
           }
         `}</style>
       </div>
-      {new TimeHelpers(settings).isOpenToday()
-        ? <>
+      {isOpenToday
+        ?
+        <>
           {getToggleSettings
             ? <SettingsForm settings={settings} />
-            : <Schedule admin={true} settings={settings} bookings={bookings} />
+            :
+            <Schedule
+              admin={true}
+              settings={settings}
+              bookings={bookings}
+            />
           }
         </>
         : <SettingsForm settings={settings} />

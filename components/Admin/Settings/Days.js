@@ -1,10 +1,10 @@
 import React from "react"
 import io from "Socket.IO-client"
 
-import Notification from "../../Notification"
-
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faFloppyDisk } from "@fortawesome/free-solid-svg-icons"
+
+import Notification from "./../../Notification"
 
 const days = {
   "Monday": "Måndag",
@@ -59,21 +59,27 @@ export default function DaysSettings({ settings }) {
         id="settingsform"
         onSubmit={handleSubmit}
         autoComplete="off">
-        {settings.days.map((d, i) => (
+        {settings.days.map((day, i) => (
           <div key={i}>
-            <label className="label" name="dayy">{days[d.day]}</label>
+            <label className="label" name="day">{days[day.day]}</label>
             <div className="field is-grouped">
               <div className="control is-expanded">
                 <input
                   className="input has-text-centered"
-                  type="time" name="open"
-                  defaultValue={d.open} step="60" />
+                  type="time"
+                  name="open"
+                  defaultValue={day.open}
+                  step="60"
+                />
               </div>
               <div className="control is-expanded">
                 <input
                   className="input has-text-centered"
-                  type="time" name="close"
-                  defaultValue={d.close} step="60" />
+                  type="time"
+                  name="close"
+                  defaultValue={day.close}
+                  step="60"
+                />
               </div>
             </div>
           </div>

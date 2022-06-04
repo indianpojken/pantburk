@@ -4,40 +4,45 @@ import Item from "./Schedule/Item"
 import Category from "./Schedule/Category"
 import Timeline from "./Schedule/Timeline"
 
-import TimeHelpers from "../library/timehelpers"
+import TimeHelpers from "./../library/timehelpers"
 import { getCategory } from "./../library/settingshelpers"
 
 export default function Schedule({ admin, settings, bookings }) {
-  //if (error) return <div>Failed to load</div>
-  if (!bookings) return <div>Loading...</div>
-
   return (
     <div className="schedule">
       <div className="time" />
-      <Timeline minutes={new TimeHelpers(settings).minutesOpen()} settings={settings} />
+      <Timeline
+        minutes={new TimeHelpers(settings).minutesOpen()}
+        settings={settings}
+      />
 
-      {settings.categories.map((c, i) => (
+      {settings.categories.map((category, i) => (
         <Category
-          title={c.title}
-          position={getCategory(settings, c.category).position}
+          title={category.title}
+          position={getCategory(settings, category.category).position}
           key={i}
         />
       ))}
 
-      {bookings.map((b, i) => (
-        <Item booking={b} admin={admin} settings={settings} key={i} />
+      {bookings.map((booking, i) => (
+        <Item
+          booking={booking}
+          admin={admin}
+          settings={settings}
+          key={i}
+        />
       ))}
 
       <style jsx>{`
-        .schedule {         
+        .schedule {
           display: grid;
           width: 100%;
           height: 100%;
           grid-column-gap: 10px;
-      
+
           grid-template-columns:
             [timeline] 50px;
-      
+
           grid-template-rows:
               [categories] 1fr
               repeat(${new TimeHelpers(settings).minutesOpen()}, 1fr);

@@ -47,7 +47,8 @@ export default function AddCategory({ notification }) {
     <form
       id="addcategory"
       onSubmit={handleSubmit}
-      autoComplete="off">
+      autoComplete="off"
+    >
       <label className="label">Lägg till kategori</label>
       <div className="field has-addons">
         <div className="control is-expanded">
@@ -57,7 +58,8 @@ export default function AddCategory({ notification }) {
             placeholder="Kategori"
             name="category"
             maxLength="20"
-            required />
+            required
+          />
         </div>
         {
           /*
@@ -68,7 +70,8 @@ export default function AddCategory({ notification }) {
               placeholder="Titel"
               name="title"
               maxLength="20"
-              required />
+              required
+            />
           </div>
           */
         }
@@ -77,7 +80,11 @@ export default function AddCategory({ notification }) {
             className="input"
             type="number"
             name="duration"
-            min="1" max="1440" defaultValue="60" required />
+            min="1"
+            max="1440"
+            defaultValue="60"
+            required
+          />
         </div>
         <div className="control color-input">
           <input
@@ -85,7 +92,8 @@ export default function AddCategory({ notification }) {
             type="color"
             name="fontColor"
             defaultValue="#000"
-            required />
+            required
+          />
         </div>
         <div className="control color-input">
           <input
@@ -93,7 +101,8 @@ export default function AddCategory({ notification }) {
             type="color"
             name="bgColor"
             defaultValue="#e8e8e8"
-            required />
+            required
+          />
         </div>
         <div className="control color-input">
           <input
@@ -101,7 +110,8 @@ export default function AddCategory({ notification }) {
             type="color"
             name="borderColor"
             defaultValue="#dbdbdb"
-            required />
+            required
+          />
         </div>
         <div className="control">
           <button className="button is-link">

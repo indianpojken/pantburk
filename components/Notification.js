@@ -3,7 +3,6 @@ import React from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faCircleCheck, faTriangleExclamation } from "@fortawesome/free-solid-svg-icons"
 
-
 const msgType = {
   "success": "is-success",
   "error": "is-danger",
@@ -25,23 +24,21 @@ export default function Notification({ message, type, timeout, setMessage }) {
     }
   })
 
-  if (message) {
-    return (
-      <div className={"notification has-text-centered " + msgType[type]}>
-        <span className="icon">
-          <FontAwesomeIcon icon={iconType[type]} />
-        </span>
-        <br />
-        {message}
-        <style jsx>{`
+  if (!message) return (<></>)
+
+  return (
+    <div className={"notification has-text-centered " + msgType[type]}>
+      <span className="icon">
+        <FontAwesomeIcon icon={iconType[type]} />
+      </span>
+      <br />
+      {message}
+      <style jsx>{`
             .notification {
               margin-top: 24px;
               margin-bottom: 24px;
             }
           `}</style>
-      </div>
-    )
-  } else {
-    return (<></>)
-  }
+    </div>
+  )
 }
