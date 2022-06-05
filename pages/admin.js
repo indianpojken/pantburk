@@ -1,6 +1,5 @@
 import React from "react"
 import Head from "next/head"
-import io from "Socket.IO-client"
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faSliders, faCalendar } from "@fortawesome/free-solid-svg-icons"
@@ -12,35 +11,14 @@ import Notification from "./../components/Notification"
 
 import TimeHelpers from "./../library/timehelpers"
 
-async function fetchData(endpoint) {
-  const response = await fetch(endpoint)
-  const result = await response.json()
-  return result
-}
-
-let socket
+import { fetchData } from "./../hooks/fetchData"
 
 export default function Admin() {
-  const [settings, setSettings] = React.useState()
-  const [bookings, setBookings] = React.useState()
+  const settings = fetchData("/api/settings")
+  const bookings = fetchData("/api/bookings")
 
   const [getToggleSettings, setToggleSettings] = React.useState(false)
   const [notification, setNotification] = React.useState("")
-
-  React.useEffect(() => {
-    (async () => {
-      setSettings(await fetchData("/api/settings"))
-      setBookings(await fetchData("/api/bookings"))
-
-      socket = io()
-      await fetch("/api/socket")
-
-      socket.on("update-data", async () => {
-        setSettings(await fetchData("/api/settings"))
-        setBookings(await fetchData("/api/bookings"))
-      })
-    })()
-  }, [])
 
   if (!settings || !bookings) return (<></>)
 

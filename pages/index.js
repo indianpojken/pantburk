@@ -1,37 +1,15 @@
 import React from "react"
 import Head from "next/head"
-import io from "Socket.IO-client"
 
 import Schedule from "./../components/Schedule"
 
 import TimeHelpers from "./../library/timehelpers"
 
-async function fetchData(endpoint) {
-  const response = await fetch(endpoint)
-  const result = await response.json()
-  return result
-}
-
-let socket
+import { fetchData } from "./../hooks/fetchData"
 
 export default function Index() {
-  const [settings, setSettings] = React.useState()
-  const [bookings, setBookings] = React.useState()
-
-  React.useEffect(() => {
-    (async () => {
-      setSettings(await fetchData("/api/settings"))
-      setBookings(await fetchData("/api/bookings"))
-
-      socket = io()
-      await fetch("/api/socket")
-
-      socket.on("update-data", async () => {
-        setSettings(await fetchData("/api/settings"))
-        setBookings(await fetchData("/api/bookings"))
-      })
-    })()
-  }, [])
+  const settings = fetchData("/api/settings")
+  const bookings = fetchData("/api/bookings")
 
   if (!settings || !bookings) return (<></>)
 
