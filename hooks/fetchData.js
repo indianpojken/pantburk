@@ -12,7 +12,7 @@ export function fetchData(endpoint) {
       const response = await fetch(endpoint)
       const result = await response.json()
 
-      socket = io()
+      if (!socket) socket = io()
       await fetch("/api/socket")
 
       setData(result)

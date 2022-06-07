@@ -35,8 +35,8 @@ export default function Notification({ message, type, timeout, setMessage }) {
       {message}
       <style jsx>{`
             .notification {
-              margin-top: 24px;
-              margin-bottom: 24px;
+              margin-top: 12px;
+              margin-bottom: 12px;
             }
           `}</style>
     </div>

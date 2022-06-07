@@ -16,10 +16,10 @@ export default function Categories({ settings }) {
 
   React.useEffect(() => {
     (async () => {
-      socket = io()
+      if (!socket) socket = io()
       await fetch("/api/socket")
     })()
-  })
+  }, [])
 
   const deleteClick = async (id) => {
     await fetch("/api/category/" + id, { method: "DELETE", })
