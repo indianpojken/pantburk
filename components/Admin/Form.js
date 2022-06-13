@@ -8,6 +8,8 @@ import { faCalendarPlus } from "@fortawesome/free-solid-svg-icons"
 import { getCategory } from "./../../library/settingshelpers"
 import TimeHelpers from "./../../library/timehelpers"
 
+import Notification from "./../Notification"
+
 const messages = {
   "conflict": "Bokning kunde inte läggas till, då tid krockar.",
   "before-open": "Bokning kunde inte läggas till, starttid är före öppningstid.",
@@ -15,6 +17,8 @@ const messages = {
 }
 
 export default function AdminForm({ settings, setMessage }) {
+  const [notification, setNotification] = React.useState("")
+
   const timehelpers = new TimeHelpers(settings)
 
   const time = {
@@ -50,17 +54,24 @@ export default function AdminForm({ settings, setMessage }) {
     const result = await response.json()
 
     if (result.status === "ok") {
-      setMessage("")
+      setNotification("")
       document.getElementById("AdminForm").reset()
     } else {
-      setMessage(messages[result.message])
+      setNotification(messages[result.message])
     }
 
     socket.emit("data-updated", true)
   }
 
   return (
-    <div>
+    <>
+      <Notification
+        message={notification}
+        setMessage={setNotification}
+        timeout={4000}
+        type="error"
+        target="adminform-notification"
+      />
       <form
         id="AdminForm"
         onSubmit={handleSubmit}
@@ -117,6 +128,6 @@ export default function AdminForm({ settings, setMessage }) {
           </div>
         </div>
       </form>
-    </div>
+    </>
   )
 }

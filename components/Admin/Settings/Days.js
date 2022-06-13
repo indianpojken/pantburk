@@ -54,7 +54,7 @@ export default function DaysSettings({ settings }) {
   }
 
   return (
-    <div>
+    <>
       <form
         id="settingsform"
         onSubmit={handleSubmit}
@@ -98,6 +98,6 @@ export default function DaysSettings({ settings }) {
         timeout={1000}
         type={notificationType}
       />
-    </div>
+    </>
   )
 }

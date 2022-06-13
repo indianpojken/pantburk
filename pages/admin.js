@@ -7,7 +7,6 @@ import { faSliders, faCalendar } from "@fortawesome/free-solid-svg-icons"
 import Schedule from "./../components/Schedule"
 import AdminForm from "./../components/Admin/Form"
 import SettingsForm from "./../components/Admin/Settings"
-import Notification from "./../components/Notification"
 
 import TimeHelpers from "./../library/timehelpers"
 
@@ -18,7 +17,6 @@ export default function Admin() {
   const bookings = fetchData("/api/bookings")
 
   const [getToggleSettings, setToggleSettings] = React.useState(false)
-  const [notification, setNotification] = React.useState("")
 
   if (!settings || !bookings) return (<></>)
 
@@ -36,10 +34,7 @@ export default function Admin() {
         <title>Pantburk (Admin)</title>
       </Head>
       <div className="timeline-border">
-        <AdminForm
-          settings={settings}
-          setMessage={setNotification}
-        />
+        <AdminForm settings={settings} />
         <br />
         {isOpenToday &&
           <button
@@ -63,19 +58,16 @@ export default function Admin() {
               </>
             }
           </button>}
-        <Notification
-          message={notification}
-          setMessage={setNotification}
-          timeout={4000}
-          type="error"
-        />
-        <style jsx>{`
-          .timeline-border {
-            padding-right: 20px;
-            padding-left: 20px;
-            border-right: 1px solid #E8E8E8;
-          }
-        `}</style>
+        <div id="adminform-notification"></div>
+        <style jsx>
+          {`
+            .timeline-border {
+              padding-right: 20px;
+              padding-left: 20px;
+              border-right: 1px solid #E8E8E8;
+            }
+          `}
+        </style>
       </div>
       {isOpenToday
         ?

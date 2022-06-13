@@ -209,15 +209,17 @@ export default function Categories({ settings }) {
                 </span>
               </button>
             </div>
-            <style jsx>{`
-            .color-input {
-              min-width: 54px;
-            }
+            <style jsx>
+              {`
+                .color-input {
+                  min-width: 54px;
+                }
 
-            .duration-input {
-              max-width: 90px;
-            }
-          `}</style>
+                .duration-input {
+                  max-width: 90px;
+                }
+              `}
+            </style>
           </div>
         ))}
         <div className="control is-expanded">

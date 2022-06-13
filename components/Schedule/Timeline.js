@@ -5,7 +5,7 @@ import TimeHelpers from "./../../library/timehelpers"
 export default function Timeline({ settings }) {
   const time = []
   const minutesOpen = new TimeHelpers(settings).minutesOpen()
-  
+
   for (let minute = 0; minute < minutesOpen; minute++) {
     if (minute % 60 == 0 || minute % 30 == 0) {
       time.push(minute)
@@ -17,13 +17,14 @@ export default function Timeline({ settings }) {
       {time.map((minute, i) => (
         <Timestamp minute={minute} settings={settings} key={i} />
       ))}
-      <style jsx global>{`
+      <style jsx global>
+      {`
         :global(body) {
           padding: 0;
           margin: 0;
           overflow: hidden;
         }
-        
+
         // https://gist.github.com/dmurawsky/d45f068097d181c733a53687edce1919
         html,
         body,
@@ -35,7 +36,8 @@ export default function Timeline({ settings }) {
           width: 100%;
           overflow: hidden;
         }
-      `}</style>
+      `}
+      </style>
     </>
   )
 }

@@ -29,16 +29,18 @@ export default function Index() {
         />
         : <></>
       }
-      <style jsx global>{`
-        // https://gist.github.com/dmurawsky/d45f068097d181c733a53687edce1919
-        html,
-        body,
-        body > div:first-child,
-        div#__next,
-        div#__next > div {
-          font-size: 1.05em;
-        }
-      `}</style>
+      <style jsx global>
+        {`
+          // https://gist.github.com/dmurawsky/d45f068097d181c733a53687edce1919
+          html,
+          body,
+          body > div:first-child,
+          div#__next,
+          div#__next > div {
+            font-size: 1.05em;
+          }
+        `}
+      </style>
     </div>
   )
 }

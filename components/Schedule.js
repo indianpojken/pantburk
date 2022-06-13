@@ -33,26 +33,28 @@ export default function Schedule({ admin, settings, bookings }) {
         />
       ))}
 
-      <style jsx>{`
-        .schedule {
-          display: grid;
-          width: 100%;
-          height: 100%;
-          grid-column-gap: 10px;
+      <style jsx>
+        {`
+          .schedule {
+            display: grid;
+            width: 100%;
+            height: 100%;
+            grid-column-gap: 10px;
 
-          grid-template-columns:
-            [timeline] 50px;
+            grid-template-columns:
+              [timeline] 50px;
 
-          grid-template-rows:
-              [categories] 1fr
-              repeat(${new TimeHelpers(settings).minutesOpen()}, 1fr);
-        }
+            grid-template-rows:
+                [categories] 1fr
+                repeat(${new TimeHelpers(settings).minutesOpen()}, 1fr);
+          }
 
-        .time {
-          grid-column: timeline;
-          grid-row: categories;
-        }
-      `}</style>
+          .time {
+            grid-column: timeline;
+            grid-row: categories;
+          }
+        `}
+      </style>
     </div>
   )
 }

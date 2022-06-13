@@ -66,30 +66,32 @@ export default function Item({ booking, admin, settings }) {
 
       </div>
 
-      <style jsx>{`
-        .booking {
-          grid-column: ${1 + position.column};
-          grid-row: ${position.start + 2} / ${position.end + 2};
-          background-color: ${color.background};
-          border-top: 1px solid ${color.border};
-          border-bottom: 1px solid ${color.border};
-          overflow: hidden;
-        }
+      <style jsx>
+        {`
+          .booking {
+            grid-column: ${1 + position.column};
+            grid-row: ${position.start + 2} / ${position.end + 2};
+            background-color: ${color.background};
+            border-top: 1px solid ${color.border};
+            border-bottom: 1px solid ${color.border};
+            overflow: hidden;
+          }
 
-        .entry { min-height: 100%; color: ${color.font};}
+          .entry { min-height: 100%; color: ${color.font};}
 
-        .time-bottom {
-          position: relative;
-        }
+          .time-bottom {
+            position: relative;
+          }
 
-        .time-bottom p {
-          position: absolute;
-          bottom: 0;
-          right: 1;
-        }
+          .time-bottom p {
+            position: absolute;
+            bottom: 0;
+            right: 1;
+          }
 
-        .delete-button { margin: 1px; }
-      `}</style>
+          .delete-button { margin: 1px; }
+        `}
+      </style>
     </div>
   )
 }
