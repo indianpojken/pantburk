@@ -1,0 +1,32 @@
+{
+  "form": {
+    "add": "Lägg till",
+    "save": "Spara",
+    "cancel": "Avbryt",
+    "settings": "Inställningar",
+    "schedule": "Schema"
+  },
+  "titles": {
+    "name": "Namn",
+    "start": "Starttid",
+    "category": "Kategori",
+    "categories": "Kategorier",
+    "add-category": "Lägg till kategori"
+  },
+  "messages": {
+    "conflict": "Bokning kunde inte läggas till, då tid krockar.",
+    "before-open": "Bokning kunde inte läggas till, starttid är före öppningstid.",
+    "after-close": "Bokning kunde inte läggas till, starttid är efter stängningstid.",
+    "saved-changes": "Sparat ändringar.",
+    "duplicate": "En annan kategori med samma namn, existerar redan."
+  },
+  "day": {
+    "Monday": "Måndag",
+    "Tuesday": "Tisdag",
+    "Wednesday": "Onsdag",
+    "Thursday": "Torsdag",
+    "Friday": "Fredag",
+    "Saturday": "Lördag",
+    "Sunday": "Söndag"
+  }
+}

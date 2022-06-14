@@ -1,24 +1,18 @@
 import React from "react"
 import io from "Socket.IO-client"
 
+import { useTranslations } from "next-intl"
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faFloppyDisk } from "@fortawesome/free-solid-svg-icons"
 
 import Notification from "./../../Notification"
 
-const days = {
-  "Monday": "Måndag",
-  "Tuesday": "Tisdag",
-  "Wednesday": "Onsdag",
-  "Thursday": "Torsdag",
-  "Friday": "Fredag",
-  "Saturday": "Lördag",
-  "Sunday": "Söndag",
-}
-
 export default function DaysSettings({ settings }) {
   const [notification, setNotification] = React.useState("")
   const [notificationType, setNotificationType] = React.useState("")
+
+  const t = useTranslations()
 
   const handleSubmit = async (event) => {
     event.preventDefault()
@@ -47,8 +41,10 @@ export default function DaysSettings({ settings }) {
     const response = await fetch(endpoint, options)
     const result = await response.json()
 
-    setNotificationType("success")
-    setNotification("Sparat ändringar.")
+    if (result.message === "ok") {
+      setNotificationType("success")
+      setNotification(t("messages.saved-changes"))
+    }
 
     socket.emit("data-updated", true)
   }
@@ -61,7 +57,9 @@ export default function DaysSettings({ settings }) {
         autoComplete="off">
         {settings.days.map((day, i) => (
           <div key={i}>
-            <label className="label" name="day">{days[day.day]}</label>
+            <label className="label" name="day">
+              {t("day." + day.day)}
+            </label>
             <div className="field is-grouped">
               <div className="control is-expanded">
                 <input
@@ -89,7 +87,7 @@ export default function DaysSettings({ settings }) {
           <span className="icon">
             <FontAwesomeIcon icon={faFloppyDisk} />
           </span>
-          <span>Spara</span>
+          <span>{t("form.save")}</span>
         </button>
       </form>
       <Notification

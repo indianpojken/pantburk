@@ -1,6 +1,8 @@
 import React from "react"
 import io from "Socket.IO-client"
 
+import { useTranslations } from "next-intl"
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import {
   faAngleUp, faAngleDown, faTrashCan, faFloppyDisk
@@ -13,6 +15,8 @@ let socket
 export default function Categories({ settings }) {
   const [notification, setNotification] = React.useState("")
   const [notificationType, setNotificationType] = React.useState("")
+
+  const t = useTranslations()
 
   React.useEffect(() => {
     (async () => {
@@ -114,7 +118,7 @@ export default function Categories({ settings }) {
         autoComplete="off"
         onSubmit={handleSubmit}
       >
-        <label className="label">Kategorier</label>
+        <label className="label">{t("titles.categories")}</label>
         {settings.categories.map((category, i) => (
           <div className="field has-addons" key={i}>
             <div className="control">
@@ -227,7 +231,7 @@ export default function Categories({ settings }) {
             <span className="icon">
               <FontAwesomeIcon icon={faFloppyDisk} />
             </span>
-            <span>Spara</span>
+            <span>{t("form.save")}</span>
           </button>
         </div>
       </form>

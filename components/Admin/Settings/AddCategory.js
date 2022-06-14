@@ -1,6 +1,8 @@
 import React from "react"
 import io from "Socket.IO-client"
 
+import { useTranslations } from "next-intl"
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faPlus } from "@fortawesome/free-solid-svg-icons"
 
@@ -8,6 +10,8 @@ import Notification from "./../../Notification"
 
 export default function AddCategory() {
   const [notification, setNotification] = React.useState("")
+
+  const t = useTranslations()
 
   const handleSubmit = async (event) => {
     event.preventDefault()
@@ -42,7 +46,7 @@ export default function AddCategory() {
       setNotification("")
       document.getElementById("addcategory").reset()
     } else if (result.message === "duplicate") {
-      setNotification("En annan kategori med samma namn, existerar redan.")
+      setNotification(t("messages.duplicate"))
     }
 
     socket.emit("data-updated", true)
@@ -62,7 +66,7 @@ export default function AddCategory() {
         onSubmit={handleSubmit}
         autoComplete="off"
       >
-        <label className="label">Lägg till kategori</label>
+        <label className="label">{t("titles.add-category")}</label>
         <div className="field has-addons">
           <div className="control is-expanded">
             <input

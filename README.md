@@ -1,7 +1,9 @@
 # Pantburk
-A simple booking system, intended for youth recreation centers. 
+A simple booking system, intended for youth recreation centers.
 
 ## Setup
+*Optional:* Change `defaultLocale` in `next.config.js`
+
 ```bash
 npm i
 npm run build

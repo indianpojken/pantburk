@@ -2,6 +2,8 @@ import React from "react"
 import dayjs from "dayjs"
 import io from "Socket.IO-client"
 
+import { useTranslations } from "next-intl"
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faCalendarPlus } from "@fortawesome/free-solid-svg-icons"
 
@@ -10,14 +12,9 @@ import TimeHelpers from "./../../library/timehelpers"
 
 import Notification from "./../Notification"
 
-const messages = {
-  "conflict": "Bokning kunde inte läggas till, då tid krockar.",
-  "before-open": "Bokning kunde inte läggas till, starttid är före öppningstid.",
-  "after-close": "Bokning kunde inte läggas till, sluttid är efter stängningstid.",
-}
-
-export default function AdminForm({ settings, setMessage }) {
+export default function AdminForm({ settings }) {
   const [notification, setNotification] = React.useState("")
+  const t = useTranslations()
 
   const timehelpers = new TimeHelpers(settings)
 
@@ -57,7 +54,7 @@ export default function AdminForm({ settings, setMessage }) {
       setNotification("")
       document.getElementById("AdminForm").reset()
     } else {
-      setNotification(messages[result.message])
+      setNotification(t("messages." + result.message))
     }
 
     socket.emit("data-updated", true)
@@ -78,7 +75,7 @@ export default function AdminForm({ settings, setMessage }) {
         autoComplete="off"
       >
         <div className="field">
-          <label className="label">Namn</label>
+          <label className="label">{t("titles.name")}</label>
           <div className="control">
             <input
               className="input"
@@ -91,7 +88,7 @@ export default function AdminForm({ settings, setMessage }) {
           </div>
         </div>
         <div className="field">
-          <label className="label">Starttid</label>
+          <label className="label">{t("titles.start")}</label>
           <div className="control">
             <input
               className="input has-text-centered"
@@ -102,7 +99,7 @@ export default function AdminForm({ settings, setMessage }) {
             />
           </div>
         </div>
-        <label className="label">Kategori</label>
+        <label className="label">{t("titles.category")}</label>
         <div className="field is-grouped">
           <div className="control">
             <div className="select">
@@ -123,7 +120,7 @@ export default function AdminForm({ settings, setMessage }) {
               <span className="icon">
                 <FontAwesomeIcon icon={faCalendarPlus} />
               </span>
-              <span>Lägg till</span>
+              <span>{t("form.add")}</span>
             </button>
           </div>
         </div>

@@ -1,0 +1,32 @@
+{
+  "form": {
+    "add": "Add",
+    "save": "Save",
+    "cancel": "Cancel",
+    "settings": "Settings",
+    "schedule": "Schedule"
+  },
+  "titles": {
+    "name": "Name",
+    "start": "Start",
+    "category": "Category",
+    "categories": "Categories",
+    "add-category": "Add category"
+  },
+  "messages": {
+    "conflict": "Booking could not be added, due to conflicting times.",
+    "before-open": "Booking could not be added, start is before opening.",
+    "after-close": "Booking could not be added, start is after closing.",
+    "saved-changes": "Saved changes.",
+    "duplicate": "Another category with the same name, already exist"
+  },
+  "day": {
+    "Monday": "Monday",
+    "Tuesday": "Tuesday",
+    "Wednesday": "Wednesday",
+    "Thursday": "Thursday",
+    "Friday": "Friday",
+    "Saturday": "Saturday",
+    "Sunday": "Sunday"
+  }
+}

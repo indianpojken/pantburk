@@ -1,11 +1,13 @@
 import React from "react"
 import Head from "next/head"
 
+import { useTranslations } from "next-intl"
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faSliders, faCalendar } from "@fortawesome/free-solid-svg-icons"
 
 import Schedule from "./../components/Schedule"
-import AdminForm from "./../components/Admin/Form"
+import AdminForm from "./../components/Admin/AdminForm"
 import SettingsForm from "./../components/Admin/Settings"
 
 import TimeHelpers from "./../library/timehelpers"
@@ -15,6 +17,8 @@ import { fetchData } from "./../hooks/fetchData"
 export default function Admin() {
   const settings = fetchData("/api/settings")
   const bookings = fetchData("/api/bookings")
+
+  const t = useTranslations()
 
   const [getToggleSettings, setToggleSettings] = React.useState(false)
 
@@ -47,14 +51,14 @@ export default function Admin() {
                 <span className="icon">
                   <FontAwesomeIcon icon={faCalendar} />
                 </span>
-                <span>Schema</span>
+                <span>{t("form.schedule")}</span>
               </>
               :
               <>
                 <span className="icon">
                   <FontAwesomeIcon icon={faSliders} />
                 </span>
-                <span>Inställningar</span>
+                <span>{t("form.settings")}</span>
               </>
             }
           </button>}
@@ -86,4 +90,12 @@ export default function Admin() {
       }
     </div>
   )
+}
+
+export async function getStaticProps({ locale }) {
+  return {
+    props: {
+      messages: (await import(`./../locales/${locale}.json`)).default
+    }
+  }
 }
